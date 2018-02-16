@@ -36,65 +36,33 @@ function showItemsForSale() {
 			console.log(items);
 		}
 		connection.end();
+		buyItemOrLeave();
 	});
+}
 
-// 	var bidOnItem = [
-// 	 {
-// 	 	type: 'list',
-// 	 	name: 'item',
-// 	 	message: 'What item would you like to bid on?',
-// 	 	choices: function() {
-// 	 		itemsArray = [];
-// 	 		for (var i = 0; i < res.length; i++) {
-// 	 			itemsArray.push(res[i].item);
-// 	 		}
-// 	 		return itemsArray;
-// 	 	}
-// 	 },
-// 	 {
-// 	 	type: 'text',
-// 	 	name: 'startBid',
-// 	 	message: 'What would you like bid?'
-// 	 },
-// 	];
+function buyItemOrLeave() {
+	var buyItem = [
+	 {
+	    type: 'confirm',
+	    name: 'readyToBuy',
+	    message: 'Do you want to buy something today?',
+	    default: true
+	  }
+	];
 
-// 	inquirer.prompt(bidOnItem).then(answers => {
-// 		var biddingItem;
-// 		for (var i = 0; i < res.length; i++){
-// 			if (res[i].item === answers.item) {
-// 				biddingItem = res[i];
-// 			}
-// 		}
-// 		//console.log(biddingItem);
+	inquirer.prompt(buyItem).then(answers => {
+		//If the user confirms that they want to buy something...
+		if (answers.readyToBuy){
+			console.log("Great! Welcome to Bamazon Sporting Goods! What would you like to buy?");
+			console.log("Enter the item nuber of the item that you would like to buy.");
+		}
 
-// 		if (biddingItem.startingBid < answers.startBid) {
-		
-
-// 			var query = connection.query(
-// 				"UPDATE biditems SET ? WHERE ?",
-// 			[
-// 			{
-// 				startingBid: answers.startBid,
-// 			},
-// 			{
-// 				id: biddingItem.id
-// 			}
-
-// 		],
-// 		function(err, res) {
-// 			//console.log(res.affectedRows + " item updated!\n");
-// 			console.log("Bid submitted successfully. You are currently the highest bidder.  \n");
-// 			postOrBid();
-// 		}
-// 	);
-// 		}
-
-// 		else {
-// 			console.log("Your bid was too low.");
-// 			postOrBid();
-// 		}
-// 	});
-// });
+		else {
+			//If the user decides they don't want to buy anything, exit application.
+			console.log("Good bye! Come back soon for more deals.");
+			return;
+		}
+	});
 }
 
 showItemsForSale();
