@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
 	user: 'root',
-	password: 'Fenway#1',
+	password: '',
 	database: 'bamazon'
 });
 
@@ -35,7 +35,6 @@ function showItemsForSale() {
 			("=====================================")
 			console.log(items);
 		}
-		connection.end();
 		buyItemOrLeave();
 	});
 }
@@ -55,6 +54,7 @@ function buyItemOrLeave() {
 		if (answers.readyToBuy){
 			console.log("Great! Welcome to Bamazon Sporting Goods! What would you like to buy?");
 			console.log("Enter the item nuber of the item that you would like to buy.");
+			selectItem();
 		}
 
 		else {
@@ -62,6 +62,73 @@ function buyItemOrLeave() {
 			console.log("Good bye! Come back soon for more deals.");
 			return;
 		}
+	});
+}
+
+function selectItem() {
+	connection.query("SELECT * FROM products", function(err, res){
+		if(err) throw err;
+
+		var selectItem = [
+		 {
+		    type: 'text',
+		    name: 'itemNumber',
+		    message: 'Enter item number: ',
+		    validate: function(value) {
+	          if (isNaN(value) === false) {
+	            return true;
+	          }
+	          return false;
+	        }
+
+		  },
+		  {
+		    type: 'text',
+		    name: 'howMany',
+		    message: 'How many would you like to buy?',
+		    validate: function(value) {
+	          if (isNaN(value) === false) {
+	            return true;
+	          }
+	          return false;
+	      	}
+	        },
+
+	       {
+	       	type: 'confirm',
+	       	name: 'confirmOrder',
+	       	message: "Are you sure? Enter Y to confirm and complete order. Enter N to cancel.",
+	       	default: true
+	       }
+		];
+
+		inquirer.prompt(selectItem).then(answers => {
+			if (answers.confirmOrder) {
+				//console.log(res);
+				//console.log("User entered: " + answers.itemNumber);
+				var customerItem;
+				for (var i = 0; i < res.length; i++){
+				if (res[i].item_id === parseInt(answers.itemNumber)) {
+				 		customerItem = res[i];
+				 	}
+				 }
+				//console.log(customerItem);
+
+				if (customerItem.stock_quantity < answers.howMany) {
+				 	console.log("Sorry, we only have " + customerItem.stock_quantity + " left on stock right now.");
+				}
+
+				else if (customerItem.stock_quantity > answers.howMany) {
+					console.log("Your have successfully ordered " + answers.howMany + " " + customerItem.product_name + "(s).");
+				 	console.log("Your total is $" + (customerItem.price * answers.howMany));
+				}
+			}
+
+			else {
+				console.log("Thanks for shopping with us. Have a nice day!");
+			}
+		});
+		connection.end();
 	});
 }
 
