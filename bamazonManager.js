@@ -40,7 +40,7 @@ function showStartScreen() {
 
 	inquirer.prompt(chooseManagerAction).then(answers => {
 		if (answers.managerList === "View Products for Sale") {
-			console.log("view products");
+			showProductsForSale();
 		}
 
 		else if (answers.managerList === "View Low Inventory") {
@@ -57,4 +57,23 @@ function showStartScreen() {
 	});
 }
 
+function showProductsForSale() {
+	connection.query("SELECT * FROM products", function(err, res){
+		if(err) throw err;
+
+		console.log("Products for sale")
+		for (var i = 0; i < res.length; i++){
+			var items = 
+			"====================================" + "\r\n" +
+			"Item number: " + res[i].item_id + "\r\n" +
+			"Item: " + res[i].product_name + "\r\n" +
+			"Price: $" + res[i].price + "\r\n" +
+			"Department: " + res[i].department_name + "\r\n" +
+			"Quantity in stock: " + res[i].stock_quantity + "\r\n" +
+			("=====================================")
+			console.log(items);
+		}
+	connection.end();
+	});
+}
 showStartScreen();
