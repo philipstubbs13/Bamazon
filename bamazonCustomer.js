@@ -4,6 +4,8 @@ var inquirer = require ("inquirer");
 //Install and require the mysql npm package to make connection to database.
 var mysql = require ("mysql");
 
+var figlet = require ('figlet');
+
 //Read and set any environment variables with the dotenv package:
 require("dotenv").config();
 
@@ -15,6 +17,37 @@ var connection = mysql.createConnection({
 	password: process.env.MYSQL_PASSWORD,
 	database: 'bamazon'
 });
+
+function showStartScreen() {
+	figlet("Bamazon", function(err, data) {
+	    if (err) {
+	        console.log('Something went wrong...');
+	        console.dir(err);
+	        return;
+	    }
+	    console.log(data);
+	});
+	console.log("Welcome to Bamazon Sporting Goods!");
+	var saleItems = [
+	 {
+	    type: 'confirm',
+	    name: 'seeSaleItems',
+	    message: 'Would you like to see what we have on sale today? ',
+		default: true
+	  }
+	];
+
+	inquirer.prompt(saleItems).then(answers => {
+		if (answers.seeSaleItems) {
+			showItemsForSale();
+		}
+
+		else {
+			console.log("Good bye! Have a nice day!");
+			return;
+		}
+	});
+}
 
 function showItemsForSale() {
 	connection.query("SELECT * FROM products", function(err, res){
@@ -136,6 +169,7 @@ function selectItem() {
 						)
 						console.log("Your have successfully ordered " + answers.howMany + " " + customerItem.product_name + ".");
 						console.log("Your total is $" + (customerItem.price * answers.howMany));
+						continueShopping();
 				}
 			}
 
@@ -147,4 +181,28 @@ function selectItem() {
 	;
 }
 
-showItemsForSale();
+function continueShopping(){
+	var purchaseAnotherItem = [
+	 {
+	    type: 'confirm',
+	    name: 'continueToShop',
+	    message: 'Do you want to continue shopping? ',
+		default: true
+	  }
+	];
+
+	inquirer.prompt(purchaseAnotherItem).then(answers => {
+		if (answers.continueToShop) {
+			showItemsForSale();
+		}
+
+		else {
+			console.log("Good bye! Have a nice day!");
+			connection.end();
+			return;
+		}
+	});
+
+}
+
+showStartScreen();
