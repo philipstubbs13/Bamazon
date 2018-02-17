@@ -40,7 +40,7 @@ function showStartScreen() {
 		}
 
 		else if (answers.managerList === "Add to Inventory") {
-			console.log("add inventory");
+			addToInventory();
 		}
 
 		else if (answers.managerList === "Add New Product") {
@@ -133,6 +133,51 @@ function addNewProduct(){
 					console.log("error: " + err);
 				}
 				console.log(answers.productName + " was successfully added to the store!");
+			}
+		)
+	});
+}
+
+function addToInventory(){
+	var addInventory = [
+	 {
+	 	type: 'text',
+	 	name: 'itemNumber',
+	 	message: 'For which product do you want to add more stock? Enter item number: ',
+	 	validate: function(value) {
+	        if (isNaN(value) === false) {
+	        	return true;
+	        }
+	        return false;
+	    }
+	 },
+	 {
+	 	type: 'text',
+	 	name: 'howMuchStock',
+	 	message: 'How many do you want to add?',
+	 	validate: function(value) {
+	        if (isNaN(value) === false) {
+	        	return true;
+	        }
+	        return false;
+	    }
+	 },
+
+	];
+
+	inquirer.prompt(addInventory).then(answers => {
+		var query = connection.query("UPDATE products SET ? WHERE ?",
+			[
+				{
+					stock_quantity: answers.howMuchStock,
+				},
+				{
+					item_id: answers.itemNumber
+				}
+			],
+			function(err, res) {
+				console.log("Stock quantity updated for item number: " + answers.itemNumber);
+				console.log("Updated quantity: " + answers.howMuchStock);
 			}
 		)
 	});
