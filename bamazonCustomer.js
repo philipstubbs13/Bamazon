@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
 	user: 'root',
-	password: 'Fenway#1',
+	password: '',
 	database: 'bamazon'
 });
 
@@ -121,6 +121,8 @@ function selectItem() {
 							[
 								{
 									stock_quantity: newQuantity,
+								},
+								{
 									item_id: customerItem.item_id
 								}
 							],
