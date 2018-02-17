@@ -19,14 +19,6 @@ var connection = mysql.createConnection({
 });
 
 function showStartScreen() {
-	// figlet("Bamazon", function(err, data) {
-	//     if (err) {
-	//         console.log('Something went wrong...');
-	//         console.dir(err);
-	//         return;
-	//     }
-	//     console.log(data);
-	// });
 	console.log("BAMAZON FOR MANAGERS");
 	var chooseManagerAction = [
 	 {
@@ -52,7 +44,7 @@ function showStartScreen() {
 		}
 
 		else if (answers.managerList === "Add New Product") {
-			console.log("add new product");
+			addNewProduct();
 		}
 	});
 }
@@ -95,4 +87,55 @@ function viewLowInventory() {
 		connection.end();
 	})
 }
+
+function addNewProduct(){
+	var addProduct = [
+	 {
+	 	type: 'text',
+	 	name: 'productName',
+	 	message: 'What is the product name? This is the name that will be visible to customers.'
+	 },
+	 {
+	 	type: 'text',
+	 	name: 'productDepartment',
+	 	message: 'What department does this product belong to?'
+	 },
+	 {
+	 	type: 'text',
+	 	name: 'productPrice',
+	 	message: 'What is the price of the product?'
+	 },
+	 {
+	 	type: 'text',
+	 	name: 'productStock',
+	 	message: 'How many are currently in stock?',
+	 	validate: function(value) {
+	        if (isNaN(value) === false) {
+	        	return true;
+	        }
+	        return false;
+	    }
+	 },
+	];
+
+	inquirer.prompt(addProduct).then(answers => {
+		var query = connection.query(
+			"INSERT INTO products SET ?", 
+			{
+				product_name: answers.productName,
+				department_name: answers.productDepartment,
+				price: answers.productPrice,
+				stock_quantity: answers.productStock
+
+			},
+			function(err, res) {
+				if (err){
+					console.log("error: " + err);
+				}
+				console.log(answers.productName + " was successfully added to the store!");
+			}
+		)
+	});
+}
+
 showStartScreen();

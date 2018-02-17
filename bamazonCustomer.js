@@ -19,14 +19,14 @@ var connection = mysql.createConnection({
 });
 
 function showStartScreen() {
-	figlet("Bamazon", function(err, data) {
-	    if (err) {
-	        console.log('Something went wrong...');
-	        console.dir(err);
-	        return;
-	    }
-	    console.log(data);
-	});
+	// figlet("Bamazon", function(err, data) {
+	//     if (err) {
+	//         console.log('Something went wrong...');
+	//         console.dir(err);
+	//         return;
+	//     }
+	//     console.log(data);
+	// });
 	console.log("Welcome to Bamazon Sporting Goods!");
 	var saleItems = [
 	 {
@@ -150,7 +150,7 @@ function selectItem() {
 
 				else if (customerItem.stock_quantity > answers.howMany) {
 						var newQuantity = customerItem.stock_quantity - answers.howMany;
-						console.log("Updating quantity... \n" + newQuantity);
+						//console.log("Updating quantity... \n" + newQuantity);
 
 						var query = connection.query(
 							"UPDATE products SET ? WHERE ?",
@@ -168,7 +168,7 @@ function selectItem() {
 							}
 						)
 						console.log("Your have successfully ordered " + answers.howMany + " " + customerItem.product_name + ".");
-						console.log("Your total is $" + (customerItem.price * answers.howMany));
+						console.log("Your total is $" + (customerItem.price * answers.howMany) + ".");
 						continueShopping();
 				}
 			}
