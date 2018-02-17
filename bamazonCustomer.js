@@ -9,16 +9,9 @@ var connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
 	user: 'root',
-	password: '',
+	password: 'Fenway#1',
 	database: 'bamazon'
 });
-
-//Test connection to the database.
-// connection.connect(function(err) {
-// 	if(err) throw err;
-
-// 	console.log("connected as id " + connection.threadId);
-// });
 
 function showItemsForSale() {
 	connection.query("SELECT * FROM products", function(err, res){
@@ -60,6 +53,7 @@ function buyItemOrLeave() {
 		else {
 			//If the user decides they don't want to buy anything, exit application.
 			console.log("Good bye! Come back soon for more deals.");
+			//connection.end();
 			return;
 		}
 	});
@@ -119,8 +113,24 @@ function selectItem() {
 				}
 
 				else if (customerItem.stock_quantity > answers.howMany) {
-					console.log("Your have successfully ordered " + answers.howMany + " " + customerItem.product_name + "(s).");
-				 	console.log("Your total is $" + (customerItem.price * answers.howMany));
+						var newQuantity = customerItem.stock_quantity - answers.howMany;
+						console.log("Updating quantity... \n" + newQuantity);
+
+						var query = connection.query(
+							"UPDATE products SET ? WHERE ?",
+							[
+								{
+									stock_quantity: newQuantity,
+									item_id: customerItem.item_id
+								}
+							],
+							function(err, res) {
+								console.log("Item id: " + customerItem.item_id);
+								console.log("quantity: " + newQuantity);
+							}
+						)
+						console.log("Your have successfully ordered " + answers.howMany + " " + customerItem.product_name + ".");
+						console.log("Your total is $" + (customerItem.price * answers.howMany));
 				}
 			}
 
@@ -128,7 +138,7 @@ function selectItem() {
 				console.log("Thanks for shopping with us. Have a nice day!");
 			}
 		});
-		connection.end();
+		//connection.end();
 	});
 }
 
