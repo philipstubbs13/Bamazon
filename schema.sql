@@ -29,5 +29,19 @@ VALUES ("Downhill skis", "Winter Sports", 225.89, 35),
 ("Backpack", "Camping and Hiking", 35.49, 15),
 ("Mountain Bike", "Cycling", 131.99, 10),
 ("Hockey skates", "Winter Sports", 69.99, 22),
-("Fitbit Flex 2", "Exercise and Fitness", 59.00, 14)
+("Fitbit Flex 2", "Exercise and Fitness", 59.00, 14);
+
+CREATE TABLE departments (
+	-- Unique id for each department --
+    department_id INT(11) AUTO_INCREMENT NOT NULL,
+    -- Name of department --
+	department_name VARCHAR(100) NOT NULL,
+    -- Dummy number set for each department --
+	over_head_costs VARCHAR(100) NOT NULL,
+	PRIMARY KEY (department_id)
+);
+
+ALTER TABLE products
+  ADD product_sales DECIMAL(10,2) NOT NULL;
+
 
