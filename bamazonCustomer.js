@@ -19,14 +19,6 @@ var connection = mysql.createConnection({
 });
 
 function showStartScreen() {
-	// figlet("Bamazon", function(err, data) {
-	//     if (err) {
-	//         console.log('Something went wrong...');
-	//         console.dir(err);
-	//         return;
-	//     }
-	//     console.log(data);
-	// });
 	console.log("Welcome to Bamazon Sporting Goods!");
 	var saleItems = [
 	 {
@@ -43,7 +35,7 @@ function showStartScreen() {
 		}
 
 		else {
-			console.log("Good bye! Have a nice day!");
+			console.log("Thanks for shopping with us! Have a nice day!");
 			return;
 		}
 	});
@@ -81,14 +73,14 @@ function buyItemOrLeave() {
 	inquirer.prompt(buyItem).then(answers => {
 		//If the user confirms that they want to buy something...
 		if (answers.readyToBuy){
-			console.log("Great! Welcome to Bamazon Sporting Goods! What would you like to buy?");
+			console.log("What would you like to buy?");
 			console.log("Enter the item nuber of the item that you would like to buy.");
 			selectItem();
 		}
 
 		else {
 			//If the user decides they don't want to buy anything, exit application.
-			console.log("Good bye! Come back soon for more deals.");
+			console.log("Thanks for shopping with us! Come back soon for more deals.");
 			//connection.end();
 			return;
 		}
@@ -167,7 +159,9 @@ function selectItem() {
 								//console.log("quantity: " + newQuantity);
 							}
 						)
-						console.log("Your have successfully ordered " + answers.howMany + " " + customerItem.product_name + ".");
+						console.log("Order complete");
+						console.log("Item ordered: " + customerItem.product_name);
+						console.log("Quantity: " + answers.howMany);
 						console.log("Your total is $" + (customerItem.price * answers.howMany) + ".");
 						continueShopping();
 				}
