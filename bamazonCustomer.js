@@ -4,12 +4,15 @@ var inquirer = require ("inquirer");
 //Install and require the mysql npm package to make connection to database.
 var mysql = require ("mysql");
 
+//Read and set any environment variables with the dotenv package:
+require("dotenv").config();
+
 //Create connection to mysql database.
 var connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
 	user: 'root',
-	password: '',
+	password: process.env.MYSQL_PASSWORD,
 	database: 'bamazon'
 });
 
@@ -127,8 +130,8 @@ function selectItem() {
 								}
 							],
 							function(err, res) {
-								console.log("Item id: " + customerItem.item_id);
-								console.log("quantity: " + newQuantity);
+								//console.log("Item id: " + customerItem.item_id);
+								//console.log("quantity: " + newQuantity);
 							}
 						)
 						console.log("Your have successfully ordered " + answers.howMany + " " + customerItem.product_name + ".");
@@ -140,8 +143,8 @@ function selectItem() {
 				console.log("Thanks for shopping with us. Have a nice day!");
 			}
 		});
-		//connection.end();
 	});
+	;
 }
 
 showItemsForSale();
