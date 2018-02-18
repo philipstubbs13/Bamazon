@@ -43,6 +43,14 @@ CREATE TABLE departments (
 	PRIMARY KEY (department_id)
 );
 
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ("Winter Sports", 10000),
+("Team Sports", 19300),
+("Water Sports", 60000),
+("Camping and Hiking", 25150),
+("Cycling", 30600),
+("Exercise and Fitness", 40500)
+
 ALTER TABLE products
   ADD product_sales DECIMAL(10,2) NOT NULL;
 

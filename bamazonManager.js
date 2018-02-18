@@ -4,8 +4,6 @@ var inquirer = require ("inquirer");
 //Install and require the mysql npm package to make connection to database.
 var mysql = require ("mysql");
 
-var figlet = require ('figlet');
-
 //Read and set any environment variables with the dotenv package:
 require("dotenv").config();
 
