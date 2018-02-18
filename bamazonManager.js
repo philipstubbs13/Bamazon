@@ -8,6 +8,7 @@ var mysql = require ("mysql");
 require("dotenv").config();
 
 //Create connection to mysql database.
+//Read mysql password from the .env file, which doesn't get uploaded to github.
 var connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
@@ -16,8 +17,10 @@ var connection = mysql.createConnection({
 	database: 'bamazon'
 });
 
-function showStartScreen() {
+//Create function that allows users with manager permissions to view certain menu options.
+function showManagerScreen() {
 	console.log("BAMAZON FOR MANAGERS");
+	//A manager user can view products for sale, view low inventory, add to inventory, and add a new product.
 	var chooseManagerAction = [
 	 {
 	    type: 'list',
@@ -28,29 +31,37 @@ function showStartScreen() {
 	  }
 	];
 
+	//Use inquirer to prompt user to select an action from the list.
 	inquirer.prompt(chooseManagerAction).then(answers => {
+		//If user selects view products for sale, show the products that are currently for sale.
 		if (answers.managerList === "View Products for Sale") {
 			showProductsForSale();
 		}
 
+		//If user selects view low inventory, show the products that have a stock of less than 5.
 		else if (answers.managerList === "View Low Inventory") {
 			viewLowInventory();
 		}
 
+		//If user selects add to inventory, allow user to add stock to product.
 		else if (answers.managerList === "Add to Inventory") {
 			addToInventory();
 		}
 
+		//If user selects add new product, allow user to add a new product to the store.
 		else if (answers.managerList === "Add New Product") {
 			addNewProduct();
 		}
 	});
 }
 
+//Create function to show all the products currently for sale.
 function showProductsForSale() {
+	//Create connection query and query all the columns from the products table.
 	connection.query("SELECT * FROM products", function(err, res){
 		if(err) throw err;
 
+		//Display the product information to the terminal, including the quantity in stock.
 		console.log("Products for sale")
 		for (var i = 0; i < res.length; i++){
 			var items = 
@@ -63,14 +74,19 @@ function showProductsForSale() {
 			"====================================="
 			console.log(items);
 		}
+		//End database connection.
 		connection.end();
 	});
 }
 
+//Create a function to view products that have a stock of less than 5.
 function viewLowInventory() {
+	//Create a connection query and query the database for products that have a stock_quantity less than 5.
 	connection.query("SELECT item_id, product_name, stock_quantity FROM products WHERE stock_quantity < 5", function(err,res){
+		//If there is an error, throw error.
 		if (err) throw err;
 
+		//Display the products with stock_quantity < 5 to terminal.
 		console.log("The following products are low in inventory (quantity is less than 5.)");
 		//console.log(res);
 		for (var i = 0; i < res.length; i++){
@@ -82,11 +98,14 @@ function viewLowInventory() {
 			"====================================" 
 			console.log(lowInvetoryItems);
 		}
+		//End database connection.
 		connection.end();
 	})
 }
 
+//Create a function that allows manager user to add a new product to the store.
 function addNewProduct(){
+	//Use inquirer to prompt user for the new product information (product name, department, price, and quantity in stock).
 	var addProduct = [
 	 {
 	 	type: 'text',
@@ -116,6 +135,7 @@ function addNewProduct(){
 	 },
 	];
 
+	//After getting product information from user run INSERT INTO statement to add product to mysql database.
 	inquirer.prompt(addProduct).then(answers => {
 		var query = connection.query(
 			"INSERT INTO products SET ?", 
@@ -128,16 +148,20 @@ function addNewProduct(){
 
 			},
 			function(err, res) {
+				//If there is an error, log it.
 				if (err){
 					console.log("error: " + err);
 				}
+				//Else, notify user that the product was successfully added to the store.
 				console.log(answers.productName + " was successfully added to the store!");
 			}
 		)
 	});
 }
 
+//Create a function that allows manager users to add stock to a product.
 function addToInventory(){
+	//Use inquirer to prompt user to enter the item number and how much stock they want to add.
 	var addInventory = [
 	 {
 	 	type: 'text',
@@ -164,7 +188,9 @@ function addToInventory(){
 
 	];
 
+	//After getting information from user, create connection query to the database.
 	inquirer.prompt(addInventory).then(answers => {
+		//Run UPDATE statement on products table to update stock quantity for the item number the user entered.
 		var query = connection.query("UPDATE products SET ? WHERE ?",
 			[
 				{
@@ -175,6 +201,7 @@ function addToInventory(){
 				}
 			],
 			function(err, res) {
+				//After adding product stock, notify user that the stock quantity has been updated in the database.
 				console.log("Stock quantity updated for item number: " + answers.itemNumber);
 				console.log("Updated quantity: " + answers.howMuchStock);
 			}
@@ -182,4 +209,5 @@ function addToInventory(){
 	});
 }
 
-showStartScreen();
+//Call showManagerScreen function to display manager menu options.
+showManagerScreen();
