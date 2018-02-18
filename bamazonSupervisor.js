@@ -1,15 +1,18 @@
 //Install and require the inquirer npm package to prompt user.
 var inquirer = require ("inquirer");
 
-//Install and require the mysql npm package to make connection to database.
+//Install and require the mysql npm package to make connection to mysql database.
 var mysql = require ("mysql");
 
-//Read and set any environment variables with the dotenv package:
+//Read and set any environment variables with the dotenv package.
 require("dotenv").config();
 
-var tableize = require('tableize-object');
+//Install and require the cli-table npm package.
+//This utility allows you to render unicode-aided tables on the command line from your node.js scripts.
+var Table = require('cli-table');
 
 //Create connection to mysql database.
+//Read mysql password from the .env file.
 var connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
@@ -18,8 +21,11 @@ var connection = mysql.createConnection({
 	database: 'bamazon'
 });
 
-function showStartScreen() {
+//Create function to show the menu options that a store supervisor can access.
+function showSupervisorScreen() {
 	console.log("BAMAZON FOR SUPERVISORS");
+	//Create inquirer prompt to display list of available menu options/actions that a supervisor can access.
+	//A supervisor can view product sales by department and create a new department.
 	var chooseManagerAction = [
 	 {
 	    type: 'list',
@@ -30,62 +36,61 @@ function showStartScreen() {
 	];
 
 	inquirer.prompt(chooseManagerAction).then(answers => {
+		//If supervisor user selects view product sales by department, show table that displays product sales for each department.
 		if (answers.supervisorList === "View Product Sales by Department") {
 			viewProdSalesByDept();
 		}
 
+		//If supervisor user selects create new department, prompt user to enter department name and department overhead costs.
 		else if (answers.supervisorList === "Create New Department") {
 			createNewDept();
 		}
 	});
 }
 
+//Create function so that a supervisor user can view product sales by department in a table.
 function viewProdSalesByDept() {
 	console.log("Here are the product sales by department.");
+	//Create database connection query to join the departments table and products table.
+	//Here, we are selecting department id, department name, overhead costs from departments table and product sales from products table.
+	//We are only selecting DISTINCT department names so that there will be no duplicate values in the joined table.
+	//We are doing an INNER JOIN from the departments table where deparment name from departments table equals department name from products table.
 	var query = "SELECT DISTINCT departments.department_id, departments.department_name, departments.over_head_costs, products.product_sales" +
 	" FROM departments INNER JOIN products ON (departments.department_name = products.department_name)";
 	//console.log(query);
+	//Create a connection to the database passing in the created query and callback function as parameters.
 	connection.query(query, function(err, res){
+		//If there is an error, throw error.
 		if(err) throw err;
 
+		//Log the querry results to the terminal.
 		//console.log(res);
  
-		// instantiate 
+		//Instantiate.
+		//Create table to hold the data we get back from the database query.
 		var table = new Table({
+			//Define names for the header rows.
 		    head: ['Department ID', 'Department Name', 'Overhead Costs', 'Product Sales']
 		  //, colWidths: [100, 200, 200, 200]
 		});
 		 
-		for (var i=0; i < res.length; i++) {
-
-				
-		// table is an Array, so you can `push`, `unshift`, `splice` and friends 
-		table.push(
-		    [res[i].department_id, res[i].department_name, res[i].over_head_costs, res[i].product_sales],
-		  //, ['2', 'Team Sports', 19300, 75000]
-		);
-		}
-		 
+		//Loop through the database query results and push the results to the table and populate table with the department data.
+		for (var i=0; i < res.length; i++) {			
+			// table is an Array, so you can `push`, `unshift`, `splice` and friends 
+			table.push(
+		    	[res[i].department_id, res[i].department_name, res[i].over_head_costs, res[i].product_sales],
+			);
+		} 
+		//Display table to terminal.
 		console.log(table.toString());
-		// console.log("myPlaylist");
-		// for (var i = 0; i < res.length; i++){
-		// 	console.log("====================================");
-		// 	var myplaylist = 
-
-		// 	"Song #" + res[i].id + "\r\n" +
-		// 	"Title: " + res[i].title + "\r\n" +
-		// 	"Artist: " + res[i].artist + "\r\n" +
-		// 	"Genre: " + res[i].genre 
-
-		// 	console.log(myplaylist);
-		// 	console.log("=====================================");
-
-		// }
+		//End database connection.
 		connection.end();
 	});
 }
 
+//Create function that allows supervisor user to create a new department in the store.
 function createNewDept(){
+	//Use inquirer to prompt user to enter the name of the new department and the overhead costs for the department.
 	var addDept = [
 	 {
 	 	type: 'text',
@@ -105,6 +110,7 @@ function createNewDept(){
 	 }
 	];
 
+	//Using the values we get from inquirer, add the new department info to the departments table using INSERT INTO statement.
 	inquirer.prompt(addDept).then(answers => {
 		var query = connection.query(
 			"INSERT INTO departments SET ?", 
@@ -113,14 +119,19 @@ function createNewDept(){
 				over_head_costs: answers.deptCosts
 			},
 			function(err, res) {
+				//If there is an error, console.log it.
 				if (err){
 					console.log("error: " + err);
 				}
-				console.log(answers.deptName + " was successfully added to the store!");
+				//Otherwise, notify user that the new department was successfully added.
+				//Note that the department won't show up in the product sales by dept. table until a manager adds a product to this department.
+				console.log(answers.deptName + " department was successfully added to the store!");
 			}
 		)
+		//end database connection.
 		connection.end();
 	});
 }
 
-showStartScreen();
+//Call showSupervisorScreen function to display supervisor menu options.
+showSupervisorScreen();

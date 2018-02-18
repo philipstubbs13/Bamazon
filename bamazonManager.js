@@ -123,7 +123,8 @@ function addNewProduct(){
 				product_name: answers.productName,
 				department_name: answers.productDepartment,
 				price: answers.productPrice,
-				stock_quantity: answers.productStock
+				stock_quantity: answers.productStock,
+				product_sales: 0
 
 			},
 			function(err, res) {
