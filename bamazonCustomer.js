@@ -1,15 +1,14 @@
 //Install and require the inquirer npm package to prompt user.
 var inquirer = require ("inquirer");
 
-//Install and require the mysql npm package to make connection to database.
+//Install and require the mysql npm package to make connection to mysql database.
 var mysql = require ("mysql");
-
-var figlet = require ('figlet');
 
 //Read and set any environment variables with the dotenv package:
 require("dotenv").config();
 
 //Create connection to mysql database.
+//Read mysql password from .env file, which doesn't get uploaded to github.
 var connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
@@ -18,8 +17,10 @@ var connection = mysql.createConnection({
 	database: 'bamazon'
 });
 
-function showStartScreen() {
+//Create function that allows users to browse and purchase items from store.
+function showCustomerScreen() {
 	console.log("Welcome to Bamazon Sporting Goods!");
+	//Use inquirer to prompt user if they would like to see the items on sale today.
 	var saleItems = [
 	 {
 	    type: 'confirm',
@@ -30,21 +31,30 @@ function showStartScreen() {
 	];
 
 	inquirer.prompt(saleItems).then(answers => {
+		//If the user confirms and wants to see sale items...
 		if (answers.seeSaleItems) {
+			//then show list of sale items and their prices.
 			showItemsForSale();
 		}
 
+		//If user decides that they really don't want to shop right now...
 		else {
+			//Then, exit application.
 			console.log("Thanks for shopping with us! Have a nice day!");
 			return;
 		}
 	});
 }
 
+//Create function that allows customers to see all the different products for sale and their prices.
 function showItemsForSale() {
+	//Create a connection query to the database.
+	//Select all columns from products table to get product info.
 	connection.query("SELECT * FROM products", function(err, res){
+		//If there is an error, throw error.
 		if(err) throw err;
 
+		//Otherwise, log the items for sale to the terminal.
 		console.log("Items for sale")
 		for (var i = 0; i < res.length; i++){
 			var items = 
@@ -56,11 +66,14 @@ function showItemsForSale() {
 			("=====================================")
 			console.log(items);
 		}
+		//After customer has a chance to look over the items, ask them if they want to buy something today.
 		buyItemOrLeave();
 	});
 }
 
+//Create function that allows customers to buy something from the store.
 function buyItemOrLeave() {
+	//Use inquire to ask customers if they want to buy something from the list.
 	var buyItem = [
 	 {
 	    type: 'confirm',
@@ -71,7 +84,8 @@ function buyItemOrLeave() {
 	];
 
 	inquirer.prompt(buyItem).then(answers => {
-		//If the user confirms that they want to buy something...
+		//If customer confirms that they want to buy something...
+		//Then, use inquirer to prompt them for the item number of the product they want to buy.
 		if (answers.readyToBuy){
 			console.log("What would you like to buy?");
 			console.log("Enter the item nuber of the item that you would like to buy.");
@@ -87,10 +101,15 @@ function buyItemOrLeave() {
 	});
 }
 
+//Create function that allows customers to select the product they want to purchase and a quantity value.
 function selectItem() {
+	//Create a connection query to the database.
+	//Select all columns from the products table to get product info.
 	connection.query("SELECT * FROM products", function(err, res){
+		//If there is an error, throw error.
 		if(err) throw err;
 
+		//To make purchase and checkout, go through series of prompts using inquirer.
 		var selectItem = [
 		 {
 		    type: 'text',
@@ -124,7 +143,9 @@ function selectItem() {
 	       }
 		];
 
+
 		inquirer.prompt(selectItem).then(answers => {
+			//If customer confirms order...
 			if (answers.confirmOrder) {
 				//console.log(res);
 				//console.log("User entered: " + answers.itemNumber);
@@ -136,16 +157,25 @@ function selectItem() {
 				 }
 				//console.log(customerItem);
 
+				//If stock quantity is less than the quantity that the customer wants, 
+				//notify customer that store doesn't have enough in stock right now.
 				if (customerItem.stock_quantity < answers.howMany) {
 				 	console.log("Sorry, we only have " + customerItem.stock_quantity + " left on stock right now.");
 				}
 
+				//If there is enough in stock right now, place order and charge customer for purchase.
 				else if (customerItem.stock_quantity > answers.howMany) {
+						//Create variable that we can use to update product stock quantity in database.
+						//Stock quantity equals current stock minus quantity customer purchased.
 						var newQuantity = customerItem.stock_quantity - answers.howMany;
 						//console.log("Updating quantity... \n" + newQuantity);
+						//Create variable to calculate how much to charge customer.
 						var customerTotal = customerItem.price * answers.howMany;
+						//Create variable to update/calculate productSalesTotal based on customerTotal.
 						var productSalesTotal = customerItem.product_sales + customerTotal;
 
+						//Create connection query to database. 
+						//Run UPDATE statement on products table to update product stock quantity in database for the specified item number.
 						var query = connection.query(
 							"UPDATE products SET ? WHERE ?",
 							[
@@ -162,6 +192,7 @@ function selectItem() {
 								//console.log("quantity: " + newQuantity);
 							}
 						)
+						//Display order details and total price to customer.
 						console.log("Order complete");
 						console.log("Item ordered: " + customerItem.product_name);
 						console.log("Quantity: " + answers.howMany);
@@ -170,6 +201,7 @@ function selectItem() {
 				}
 			}
 
+			//If customer cancels order....
 			else {
 				console.log("Thanks for shopping with us. Have a nice day!");
 			}
@@ -178,6 +210,7 @@ function selectItem() {
 	;
 }
 
+//Create function to ask customer if they want to continue shopping after an order is placed.
 function continueShopping(){
 	var purchaseAnotherItem = [
 	 {
@@ -189,11 +222,13 @@ function continueShopping(){
 	];
 
 	inquirer.prompt(purchaseAnotherItem).then(answers => {
+		//If customer wants to continue to show, show list of items for sale again.
 		if (answers.continueToShop) {
 			showItemsForSale();
 		}
 
 		else {
+			//Otherwise, exit application.
 			console.log("Good bye! Have a nice day!");
 			connection.end();
 			return;
@@ -201,5 +236,5 @@ function continueShopping(){
 	});
 
 }
-
-showStartScreen();
+//Call function to display customer start screen.
+showCustomerScreen();
