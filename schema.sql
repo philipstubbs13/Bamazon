@@ -30,8 +30,7 @@ VALUES ("Downhill skis", "Winter Sports", 225.89, 35, 0),
 ("Backpack", "Camping and Hiking", 35.49, 15, 0),
 ("Mountain Bike", "Cycling", 131.99, 10, 0),
 ("Hockey skates", "Winter Sports", 69.99, 22, 0),
-("Fitbit Flex 2", "Exercise and Fitness", 59.00, 14, 0),
-("Soccer Ball", "Team Sports", 15.00, 16, 0)
+("Fitbit Flex 2", "Exercise and Fitness", 59.00, 14, 0)
 
 CREATE TABLE departments (
 	-- Unique id for each department --
@@ -55,4 +54,9 @@ ALTER TABLE products
   ADD product_sales DECIMAL(10,2) NOT NULL;
 
 ALTER TABLE products DROP COLUMN product_sales;
+
+SELECT DISTINCT departments.department_id, departments.department_name, 
+departments.over_head_costs, products.product_sales
+FROM departments
+INNER JOIN products ON (departments.department_name = products.department_name);
 
