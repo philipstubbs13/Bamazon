@@ -143,12 +143,15 @@ function selectItem() {
 				else if (customerItem.stock_quantity > answers.howMany) {
 						var newQuantity = customerItem.stock_quantity - answers.howMany;
 						//console.log("Updating quantity... \n" + newQuantity);
+						var customerTotal = customerItem.price * answers.howMany;
+						var productSalesTotal = customerItem.product_sales + customerTotal;
 
 						var query = connection.query(
 							"UPDATE products SET ? WHERE ?",
 							[
 								{
 									stock_quantity: newQuantity,
+									product_sales: productSalesTotal
 								},
 								{
 									item_id: customerItem.item_id
@@ -162,7 +165,7 @@ function selectItem() {
 						console.log("Order complete");
 						console.log("Item ordered: " + customerItem.product_name);
 						console.log("Quantity: " + answers.howMany);
-						console.log("Your total is $" + (customerItem.price * answers.howMany) + ".");
+						console.log("Your total is $" + customerTotal + ".");
 						continueShopping();
 				}
 			}
