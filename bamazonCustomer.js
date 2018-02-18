@@ -95,7 +95,8 @@ function buyItemOrLeave() {
 		else {
 			//If the user decides they don't want to buy anything, exit application.
 			console.log("Thanks for shopping with us! Come back soon for more deals.");
-			//connection.end();
+			//End database connection.
+			connection.end();
 			return;
 		}
 	});
@@ -161,6 +162,7 @@ function selectItem() {
 				//notify customer that store doesn't have enough in stock right now.
 				if (customerItem.stock_quantity < answers.howMany) {
 				 	console.log("Sorry, we only have " + customerItem.stock_quantity + " left on stock right now.");
+				 	console.log("Select a different amount.");
 				}
 
 				//If there is enough in stock right now, place order and charge customer for purchase.

@@ -7,6 +7,10 @@ var mysql = require ("mysql");
 //Read and set any environment variables with the dotenv package:
 require("dotenv").config();
 
+//Install and require the cli-table npm package.
+//This utility allows you to render unicode-aided tables on the command line from your node.js scripts.
+var Table = require('cli-table');
+
 //Create connection to mysql database.
 //Read mysql password from the .env file, which doesn't get uploaded to github.
 var connection = mysql.createConnection({
@@ -63,17 +67,34 @@ function showProductsForSale() {
 
 		//Display the product information to the terminal, including the quantity in stock.
 		console.log("Products for sale")
-		for (var i = 0; i < res.length; i++){
-			var items = 
-			"====================================" + "\r\n" +
-			"Item number: " + res[i].item_id + "\r\n" +
-			"Item: " + res[i].product_name + "\r\n" +
-			"Price: $" + res[i].price + "\r\n" +
-			"Department: " + res[i].department_name + "\r\n" +
-			"Quantity in stock: " + res[i].stock_quantity + "\r\n" +
-			"====================================="
-			console.log(items);
-		}
+		// for (var i = 0; i < res.length; i++){
+		// 	var items = 
+		// 	"====================================" + "\r\n" +
+		// 	"Item number: " + res[i].item_id + "\r\n" +
+		// 	"Item: " + res[i].product_name + "\r\n" +
+		// 	"Price: $" + res[i].price + "\r\n" +
+		// 	"Department: " + res[i].department_name + "\r\n" +
+		// 	"Quantity in stock: " + res[i].stock_quantity + "\r\n" +
+		// 	"====================================="
+		// 	console.log(items);
+		// }
+		//Instantiate.
+		//Create table to hold the data we get back from the database query.
+		var table = new Table({
+			//Define names for the header rows.
+		    head: ['Item number', 'Item', 'Price', 'Deparment', 'Quantity in stock']
+		  //, colWidths: [100, 200, 200, 200]
+		});
+		 
+		//Loop through the database query results and push the results to the table and populate table with the department data.
+		for (var i=0; i < res.length; i++) {			
+			// table is an Array, so you can `push`, `unshift`, `splice` and friends 
+			table.push(
+		    	[res[i].item_id, res[i].product_name, res[i].price, res[i].department_name, res[i].stock_quantity],
+			);
+		} 
+		//Display table to terminal.
+		console.log(table.toString());
 		//End database connection.
 		connection.end();
 	});
