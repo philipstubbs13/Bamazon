@@ -97,17 +97,8 @@ function viewLowInventory() {
 		if (err) throw err;
 
 		//Display the products with stock_quantity < 5 to terminal.
-		console.log("The following products are low in inventory (quantity is less than 5.)");
+		console.log("Products low in inventory (quantity is less than 5)");
 		//console.log(res);
-		// for (var i = 0; i < res.length; i++){
-		// 	var lowInvetoryItems =
-		// 	"====================================" + "\r\n" +
-		// 	"Item number: " + res[i].item_id + "\r\n" +
-		// 	"Item: " + res[i].product_name + "\r\n" +
-		// 	"Quantity in stock: " + res[i].stock_quantity + "\r\n" +
-		// 	"====================================" 
-		// 	console.log(lowInvetoryItems);
-		// }
 		//Instantiate.
 		//Create table to hold the data we get back from the database query.
 		var lowInventoryTable = new Table({
@@ -132,57 +123,74 @@ function viewLowInventory() {
 
 //Create a function that allows manager user to add a new product to the store.
 function addNewProduct(){
-	//Use inquirer to prompt user for the new product information (product name, department, price, and quantity in stock).
-	var addProduct = [
-	 {
-	 	type: 'text',
-	 	name: 'productName',
-	 	message: 'What is the product name? This is the name that will be visible to customers.'
-	 },
-	 {
-	 	type: 'text',
-	 	name: 'productDepartment',
-	 	message: 'What department does this product belong to?'
-	 },
-	 {
-	 	type: 'text',
-	 	name: 'productPrice',
-	 	message: 'What is the price of the product?'
-	 },
-	 {
-	 	type: 'text',
-	 	name: 'productStock',
-	 	message: 'How many are currently in stock?',
-	 	validate: function(value) {
-	        if (isNaN(value) === false) {
-	        	return true;
-	        }
-	        return false;
-	    }
-	 },
-	];
+	//Create connection query to the database to query all the department names available in the database.
+	connection.query("SELECT DISTINCT department_name FROM products", function(err, res){
+		//If there is an error, throw error.
+		if(err) throw err;
+		//Use inquirer to prompt user for the new product information (product name, department, price, and quantity in stock).
+		//console.log(res);
+		var addProduct = [
+		 {
+		 	type: 'text',
+		 	name: 'productName',
+		 	message: 'What is the product name? This is the name that will be visible to customers.'
+		 },
+		 {
+		 	type: 'list',
+		 	name: 'productDepartment',
+		 	message: 'What department does this product belong to?',
+		 	choices: function() {
+		 		var departmentsArray = [];
+		 		for (var i = 0; i < res.length; i++) {
+		 			departmentsArray.push(res[i].department_name);
+		 		}
+		 		return departmentsArray;
+		 	}
 
-	//After getting product information from user run INSERT INTO statement to add product to mysql database.
-	inquirer.prompt(addProduct).then(answers => {
-		var query = connection.query(
-			"INSERT INTO products SET ?", 
-			{
-				product_name: answers.productName,
-				department_name: answers.productDepartment,
-				price: answers.productPrice,
-				stock_quantity: answers.productStock,
-				product_sales: 0
+		 },
+		 {
+		 	type: 'text',
+		 	name: 'productPrice',
+		 	message: 'What is the price of the product?'
+		 },
+		 {
+		 	type: 'text',
+		 	name: 'productStock',
+		 	message: 'How many are currently in stock?',
+		 	validate: function(value) {
+		        if (isNaN(value) === false) {
+		        	return true;
+		        }
+		        return false;
+		    }
+		 },
+		];
 
-			},
-			function(err, res) {
-				//If there is an error, log it.
-				if (err){
-					console.log("error: " + err);
+
+		//After getting product information from user run INSERT INTO statement to add product to mysql database.
+		inquirer.prompt(addProduct).then(answers => {
+			var query = connection.query(
+				"INSERT INTO products SET ?", 
+				{
+					product_name: answers.productName,
+					department_name: answers.productDepartment,
+					price: answers.productPrice,
+					stock_quantity: answers.productStock,
+					product_sales: 0
+
+				},
+				function(err, res) {
+					//If there is an error, log it.
+					if (err){
+						console.log("error: " + err);
+					}
+					//Else, notify user that the product was successfully added to the store.
+					console.log(answers.productName + " was successfully added to the store!");
 				}
-				//Else, notify user that the product was successfully added to the store.
-				console.log(answers.productName + " was successfully added to the store!");
-			}
-		)
+			)
+			//End database connection.
+			connection.end();
+		});
 	});
 }
 
