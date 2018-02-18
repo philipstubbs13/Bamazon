@@ -7,6 +7,8 @@ var mysql = require ("mysql");
 //Read and set any environment variables with the dotenv package:
 require("dotenv").config();
 
+var tableize = require('tableize-object');
+
 //Create connection to mysql database.
 var connection = mysql.createConnection({
 	host: "localhost",
@@ -35,6 +37,51 @@ function showStartScreen() {
 		else if (answers.supervisorList === "Create New Department") {
 			createNewDept();
 		}
+	});
+}
+
+function viewProdSalesByDept() {
+	console.log("Here are the product sales by department.");
+	var query = "SELECT DISTINCT departments.department_id, departments.department_name, departments.over_head_costs, products.product_sales" +
+	" FROM departments INNER JOIN products ON (departments.department_name = products.department_name)";
+	//console.log(query);
+	connection.query(query, function(err, res){
+		if(err) throw err;
+
+		//console.log(res);
+ 
+		// instantiate 
+		var table = new Table({
+		    head: ['Department ID', 'Department Name', 'Overhead Costs', 'Product Sales']
+		  //, colWidths: [100, 200, 200, 200]
+		});
+		 
+		for (var i=0; i < res.length; i++) {
+
+				
+		// table is an Array, so you can `push`, `unshift`, `splice` and friends 
+		table.push(
+		    [res[i].department_id, res[i].department_name, res[i].over_head_costs, res[i].product_sales],
+		  //, ['2', 'Team Sports', 19300, 75000]
+		);
+		}
+		 
+		console.log(table.toString());
+		// console.log("myPlaylist");
+		// for (var i = 0; i < res.length; i++){
+		// 	console.log("====================================");
+		// 	var myplaylist = 
+
+		// 	"Song #" + res[i].id + "\r\n" +
+		// 	"Title: " + res[i].title + "\r\n" +
+		// 	"Artist: " + res[i].artist + "\r\n" +
+		// 	"Genre: " + res[i].genre 
+
+		// 	console.log(myplaylist);
+		// 	console.log("=====================================");
+
+		// }
+		connection.end();
 	});
 }
 
