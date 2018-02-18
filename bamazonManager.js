@@ -67,34 +67,23 @@ function showProductsForSale() {
 
 		//Display the product information to the terminal, including the quantity in stock.
 		console.log("Products for sale")
-		// for (var i = 0; i < res.length; i++){
-		// 	var items = 
-		// 	"====================================" + "\r\n" +
-		// 	"Item number: " + res[i].item_id + "\r\n" +
-		// 	"Item: " + res[i].product_name + "\r\n" +
-		// 	"Price: $" + res[i].price + "\r\n" +
-		// 	"Department: " + res[i].department_name + "\r\n" +
-		// 	"Quantity in stock: " + res[i].stock_quantity + "\r\n" +
-		// 	"====================================="
-		// 	console.log(items);
-		// }
 		//Instantiate.
 		//Create table to hold the data we get back from the database query.
-		var table = new Table({
+		var productsForSaleTable = new Table({
 			//Define names for the header rows.
 		    head: ['Item number', 'Item', 'Price', 'Deparment', 'Quantity in stock']
 		  //, colWidths: [100, 200, 200, 200]
 		});
 		 
-		//Loop through the database query results and push the results to the table and populate table with the department data.
+		//Loop through the database query results and push the results to the table and populate table with the product data.
 		for (var i=0; i < res.length; i++) {			
 			// table is an Array, so you can `push`, `unshift`, `splice` and friends 
-			table.push(
+			productsForSaleTable.push(
 		    	[res[i].item_id, res[i].product_name, res[i].price, res[i].department_name, res[i].stock_quantity],
 			);
 		} 
 		//Display table to terminal.
-		console.log(table.toString());
+		console.log(productsForSaleTable.toString());
 		//End database connection.
 		connection.end();
 	});
@@ -110,15 +99,32 @@ function viewLowInventory() {
 		//Display the products with stock_quantity < 5 to terminal.
 		console.log("The following products are low in inventory (quantity is less than 5.)");
 		//console.log(res);
-		for (var i = 0; i < res.length; i++){
-			var lowInvetoryItems =
-			"====================================" + "\r\n" +
-			"Item number: " + res[i].item_id + "\r\n" +
-			"Item: " + res[i].product_name + "\r\n" +
-			"Quantity in stock: " + res[i].stock_quantity + "\r\n" +
-			"====================================" 
-			console.log(lowInvetoryItems);
-		}
+		// for (var i = 0; i < res.length; i++){
+		// 	var lowInvetoryItems =
+		// 	"====================================" + "\r\n" +
+		// 	"Item number: " + res[i].item_id + "\r\n" +
+		// 	"Item: " + res[i].product_name + "\r\n" +
+		// 	"Quantity in stock: " + res[i].stock_quantity + "\r\n" +
+		// 	"====================================" 
+		// 	console.log(lowInvetoryItems);
+		// }
+		//Instantiate.
+		//Create table to hold the data we get back from the database query.
+		var lowInventoryTable = new Table({
+			//Define names for the header rows.
+		    head: ['Item number', 'Item','Quantity in stock']
+			//, colWidths: [100, 200, 200, 200]
+		});
+		 
+		//Loop through the database query results and push the results to the table and populate table with the product data.
+		for (var i=0; i < res.length; i++) {			
+			// table is an Array, so you can `push`, `unshift`, `splice` and friends 
+			lowInventoryTable.push(
+		    	[res[i].item_id, res[i].product_name, res[i].stock_quantity],
+			);
+		} 
+		//Display table to terminal.
+		console.log(lowInventoryTable.toString());
 		//End database connection.
 		connection.end();
 	})
