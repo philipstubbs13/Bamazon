@@ -31,7 +31,7 @@ function showSupervisorScreen() {
 	    type: 'list',
 	    name: 'supervisorList',
 	    message: "What would you like to do?",
-	    choices: ['View Product Sales by Department', 'Create New Department'],
+	    choices: ['View Product Sales by Department', 'Create New Department', 'Exit Application'],
 	  }
 	];
 
@@ -44,6 +44,11 @@ function showSupervisorScreen() {
 		//If supervisor user selects create new department, prompt user to enter department name and department overhead costs.
 		else if (answers.supervisorList === "Create New Department") {
 			createNewDept();
+		}
+
+		//If supervisor doesn't want to do anything else and wants to exit, end database connection and exit the application.
+		else if (answers.supervisorList === "Exit Application") {
+			exitApplication();
 		}
 	});
 }
@@ -85,8 +90,8 @@ function viewProdSalesByDept() {
 		} 
 		//Display table to terminal.
 		console.log(table.toString());
-		//End database connection.
-		connection.end();
+		//return to Supervisor Home screen.
+		setTimeout(showSupervisorScreen, 3000); 
 	});
 }
 
@@ -130,10 +135,17 @@ function createNewDept(){
 				console.log(answers.deptName + " department was successfully added to the store!");
 			}
 		)
-		//end database connection.
-		connection.end();
+		//return to Supervisor Home screen.
+		setTimeout(showSupervisorScreen, 3000); 
 	});
 }
 
 //Call showSupervisorScreen function to display supervisor menu options.
 showSupervisorScreen();
+
+//Create function that ends database connection and exits application.
+function exitApplication() {
+	console.log("Good bye!");
+	connection.end();
+	return;
+}
