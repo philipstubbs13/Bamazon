@@ -77,15 +77,18 @@ function viewProdSalesByDept() {
 		//Create table to hold the data we get back from the database query.
 		var table = new Table({
 			//Define names for the header rows.
-		    head: ['Department ID', 'Department Name', 'Overhead Costs', 'Department Sales']
+		    head: ['Department ID', 'Department Name', 'Overhead Costs', 'Department Sales', 'Total Profit']
 		  //, colWidths: [100, 200, 200, 200]
 		});
 		 
 		//Loop through the database query results and push the results to the table and populate table with the department data.
-		for (var i=0; i < res.length; i++) {			
+		for (var i=0; i < res.length; i++) {
+			//Calculate total profit for each department.
+ 			//Total profit = department sales - overhead costs.
+ 			var totalProfit = res[i].department_sales - res[i].over_head_costs;			
 			// table is an Array, so you can `push`, `unshift`, `splice` and friends 
 			table.push(
-		    	[res[i].department_id, res[i].department_name, res[i].over_head_costs, res[i].department_sales],
+		    	[res[i].department_id, res[i].department_name, res[i].over_head_costs, res[i].department_sales, totalProfit],
 			);
 		} 
 		//Display table to terminal.
