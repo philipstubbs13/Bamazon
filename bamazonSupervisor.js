@@ -52,11 +52,13 @@ function showSupervisorScreen() {
 function viewProdSalesByDept() {
 	console.log("Here are the product sales by department.");
 	//Create database connection query to join the departments table and products table.
-	//Here, we are selecting department id, department name, overhead costs from departments table and product sales from products table.
+	//Here, we are selecting department id, department name, overhead costs from departments table.
+	//We are also selecting the SUM of the product sales from the products table for each department and storing that information using the alias department_sales.
 	//We are only selecting DISTINCT department names so that there will be no duplicate values in the joined table.
 	//We are doing an INNER JOIN from the departments table where deparment name from departments table equals department name from products table.
-	var query = "SELECT DISTINCT departments.department_id, departments.department_name, departments.over_head_costs, products.product_sales" +
-	" FROM departments INNER JOIN products ON (departments.department_name = products.department_name)";
+	//We are grouping by the department_name column.
+	//We are ordering the results by the department_sales column (from highest to lowest);
+	var query = "SELECT DISTINCT departments.department_id, departments.department_name, departments.over_head_costs, SUM(products.product_sales) as department_sales FROM departments INNER JOIN products ON (departments.department_name = products.department_name) GROUP BY department_name ORDER BY department_sales desc";
 	//console.log(query);
 	//Create a connection to the database passing in the created query and callback function as parameters.
 	connection.query(query, function(err, res){
@@ -70,7 +72,7 @@ function viewProdSalesByDept() {
 		//Create table to hold the data we get back from the database query.
 		var table = new Table({
 			//Define names for the header rows.
-		    head: ['Department ID', 'Department Name', 'Overhead Costs', 'Product Sales']
+		    head: ['Department ID', 'Department Name', 'Overhead Costs', 'Department Sales']
 		  //, colWidths: [100, 200, 200, 200]
 		});
 		 
@@ -78,7 +80,7 @@ function viewProdSalesByDept() {
 		for (var i=0; i < res.length; i++) {			
 			// table is an Array, so you can `push`, `unshift`, `splice` and friends 
 			table.push(
-		    	[res[i].department_id, res[i].department_name, res[i].over_head_costs, res[i].product_sales],
+		    	[res[i].department_id, res[i].department_name, res[i].over_head_costs, res[i].department_sales],
 			);
 		} 
 		//Display table to terminal.
