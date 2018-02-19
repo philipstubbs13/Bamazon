@@ -30,7 +30,7 @@ function showManagerScreen() {
 	    type: 'list',
 	    name: 'managerList',
 	    message: "What would you like to do?",
-	    choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product'],
+	    choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product', 'Exit Application'],
 		default: true
 	  }
 	];
@@ -55,6 +55,11 @@ function showManagerScreen() {
 		//If user selects add new product, allow user to add a new product to the store.
 		else if (answers.managerList === "Add New Product") {
 			addNewProduct();
+		}
+
+		//If user selects exit application, then end database connection and exit the application.
+		else if (answers.managerList === "Exit Application") {
+			exitApplication();
 		}
 	});
 }
@@ -84,9 +89,9 @@ function showProductsForSale() {
 		} 
 		//Display table to terminal.
 		console.log(productsForSaleTable.toString());
-		//End database connection.
-		connection.end();
 	});
+	//Return to Manager Home screen.
+	setTimeout(showManagerScreen, 3000); 
 }
 
 //Create a function to view products that have a stock of less than 5.
@@ -116,9 +121,9 @@ function viewLowInventory() {
 		} 
 		//Display table to terminal.
 		console.log(lowInventoryTable.toString());
-		//End database connection.
-		connection.end();
 	})
+	//Return to Manager Home screen.
+	setTimeout(showManagerScreen, 3000); 
 }
 
 //Create a function that allows manager user to add a new product to the store.
@@ -188,61 +193,109 @@ function addNewProduct(){
 					console.log(answers.productName + " was successfully added to the store!");
 				}
 			)
-			//End database connection.
-			connection.end();
+			//Return to Manager Home screen.
+			setTimeout(showManagerScreen, 2000); 
 		});
 	});
 }
 
 //Create a function that allows manager users to add stock to a product.
 function addToInventory(){
-	//Use inquirer to prompt user to enter the item number and how much stock they want to add.
-	var addInventory = [
-	 {
-	 	type: 'text',
-	 	name: 'itemNumber',
-	 	message: 'For which product do you want to add more stock? Enter item number: ',
-	 	validate: function(value) {
-	        if (isNaN(value) === false) {
-	        	return true;
-	        }
-	        return false;
-	    }
-	 },
-	 {
-	 	type: 'text',
-	 	name: 'howMuchStock',
-	 	message: 'How many do you want to add?',
-	 	validate: function(value) {
-	        if (isNaN(value) === false) {
-	        	return true;
-	        }
-	        return false;
-	    }
-	 },
+	//Create a connection query to the database.
+	//Select all columns from the products table to get product info.
+	connection.query("SELECT * FROM products", function(err, res){
+		//If there is an error, throw error.
+		if(err) throw err;
+		//Use inquirer to prompt user to enter the item number and how much stock they want to add.
+		var addInventory = [
+		 {
+		 	type: 'text',
+		 	name: 'itemNumber',
+		 	message: 'Enter item number: ',
+		 	validate: function(value) {
+		        if (isNaN(value) === false) {
+		        	return true;
+		        }
+		        return false;
+		    }
+		 },
+		 {
+		 	type: 'text',
+		 	name: 'howMuchStock',
+		 	message: 'How many do you want to add?',
+		 	validate: function(value) {
+		        if (isNaN(value) === false) {
+		        	return true;
+		        }
+		        return false;
+		    }
+		 },
 
-	];
+		];
 
-	//After getting information from user, create connection query to the database.
-	inquirer.prompt(addInventory).then(answers => {
-		//Run UPDATE statement on products table to update stock quantity for the item number the user entered.
-		var query = connection.query("UPDATE products SET ? WHERE ?",
-			[
-				{
-					stock_quantity: answers.howMuchStock,
-				},
-				{
-					item_id: answers.itemNumber
+		//After getting information from user, create connection query to the database.
+		inquirer.prompt(addInventory).then(answers => {
+			var availableItemNumbers = [];
+			var selectedItem;
+			for (var i = 0; i < res.length; i++) {
+				availableItemNumbers.push(res[i].item_id);
+				if (res[i].item_id === parseInt(answers.itemNumber)) {
+				 		selectedItem = res[i];
 				}
-			],
-			function(err, res) {
-				//After adding product stock, notify user that the stock quantity has been updated in the database.
-				console.log("Stock quantity updated for item number: " + answers.itemNumber);
-				console.log("Updated quantity: " + answers.howMuchStock);
 			}
-		)
+			//console.log(availableItemNumbers);
+
+			//If the item number that the user entered is valid (exists in the availableItemNumbers array)...
+			if (availableItemNumbers.indexOf(parseInt(answers.itemNumber)) > -1) {
+				//New stock quantity equals the current item stock quantity plus how much the manager wants to add.
+				var newQuantity = selectedItem.stock_quantity + parseInt(answers.howMuchStock);
+				//Run UPDATE statement on products table to update stock quantity for the item number the user entered.
+				var query = connection.query("UPDATE products SET ? WHERE ?",
+					[
+						{
+							stock_quantity: newQuantity,
+						},
+						{
+							item_id: answers.itemNumber
+						}
+					],
+					function(err, res) {
+						//After adding product stock, notify user that the stock quantity has been updated in the database.
+						var confirmationMessage = 
+						"================================================" + "\r\n" +
+						"Successfully updated stock quantity for item number: " + answers.itemNumber + "\r\n" +
+						"New quantity: " + newQuantity + "\r\n" +
+						"================================================"
+						console.log(confirmationMessage);
+					}
+				)
+				//Return to Manager Home screen.
+				setTimeout(showManagerScreen, 2000); 
+			}
+
+			//If item Number that user entered is invalid (does not exist in availableItemNumbers array),
+			//Then, display error message that item number is not valid and return to Manager Home Screen.
+			else {
+				var invalidItemNumberError = 
+				"==========================================================================================================" + "\r\n" +
+				"Item number " + answers.itemNumber +  " was not found in the system." + "\r\n" +
+				"Enter valid item number and try again." + "\r\n" +
+				"To view a list of products and their associated item numbers, select 'View Products for Sale' from the Manager Home screen." + "\r\n" +
+				"=========================================================================================================="
+				console.log(invalidItemNumberError);
+				//Return to Manager Home screen.
+				setTimeout(showManagerScreen, 2000); 
+			}
+		});
 	});
 }
 
 //Call showManagerScreen function to display manager menu options.
 showManagerScreen();
+
+//Create function that ends database connection and exits application.
+function exitApplication() {
+	console.log("Good bye!");
+	connection.end();
+	return;
+}
