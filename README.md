@@ -189,6 +189,44 @@ This file will be used by the dotenv npm package, which will pass the password v
 </ul>
 <p>The following sections describe the user workflow for each of these portals.</p>
 
+### <a name="manager-workflow"> Manager workflow
+<p>In the Manager Portal, a store manager can perform several tasks. They can view all products sold, view items that have low inventory, add inventory, and add a new product.</p>
+
+#### Accessing the Manager Portal
+<p>To access the Manager Portal, run the following command:
+<pre>node bazamonManager.js</pre>
+
+<p>When you run this command, you will see a list of menu options.</p>
+<pre>
+BAMAZON MANAGER PORTAL
+? What would you like to do? (Use arrow keys)
+> View Products for Sale
+  View Low Inventory
+  Add to Inventory
+  Add New Product
+  Exit Application
+</pre>
+
+#### View Products for Sale
+<p>When you select <b>View Products for Sale</b> from the menu, you will see a table that lists all of the products for sale along with what department the product belongs to, the price of each product, and the in-stock quantity for each product.</p>
+<img src="readme_images/view_products_sale.png">
+
+#### View Low Inventory
+<p>When you select <b>View Low Inventory</b> from the menu, you will see a table that lists all of the products in the products table in the database that have a stock quantity of less than 5.</p>
+<img src="readme_images/view_low_inventory.png">
+
+#### Add to Inventory
+<p>When you select <b>Add to Inventory</b> from the menu, you will prompted to enter the item number for the product you want to add stock to as well as how much stock.</p>
+<img src="readme_images/add_to_inventory.png">
+<p>The stock quantity for the item number entered at the prompt is updated in the products table in the database.</p>
+
+#### Add New Product
+<p>When you select <b>Add New Product</b> from the menu, you will be prompted to enter information about the product you want to add to the store. This information is used to run the INSERT INT0 MySQL statement to add the product to the products table in the database.</p>
+<img src="readme_images/add_new_product.png">
+
+#### Exit Application
+To exit the Manager Portal, select <b>Exit Application</b> from the menu.
+
 ### <a name="supervisor-workflow"> Supervisor workflow
 <p> In the Supervisor Portal, a store supervisor can create a new department and view product sales by department.</p>
 
@@ -227,11 +265,17 @@ ORDER BY department_sales desc;
 	<li>This query groups the table by the department_name column.</li>
 	<li>This query orders the results by the department_sales column (that is, from highest sales to lowest)</li>
 </ul>
-<p>Also, you will notice that total profit is not stored in the database. Total profit is calculated on the fly by taking the difference between department sales and overhead costs.</p>
+<p>When this query is executed against the products table and the departments table, a joined table similar to the following example is returned.</p>
+<img src="readme_images/department_sales.png">
+<p>Looking at this joined table, you will notice that total profit is not stored in the database. Total profit is calculated on the fly by taking the difference between department sales and overhead costs.</p>
 
 #### Create New Department
 <p>If you select <b>Create New Department</b> from the menu, you will be taken through a series of inquirer prompts to provide information about the department you want to add to the store.</p>
 <img src="readme_images/create_department.png">
+
+<p>The new department is added to the departments table in the database.</p>
+<img src="readme_images/after_create_department.png">
+<p><b>Note: </b> The new department won't show up in the joined table (Supevisor selects 'View Product Sales by Department') until a manager adds a product to this department through the Manager Portal.</p>
 
 #### Exit Supervisor Portal
 To exit the Supervisor Portal, select <b>Exit Application</b> from the menu.
