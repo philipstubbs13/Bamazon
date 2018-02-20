@@ -61,11 +61,11 @@ The first step is to clone the project repository to a local directory on your c
   	<ul>
   		<li>
   			<p>The products table contains information about each product that is sold in the store, including item number/id, product name, department name, price, stock quantity, and product sales.</p>
-  			![Image of products table](readme_images/products_table.png)
+  			<img src="readme_images/products_table.png">
   		</li>
   		<li>
   			<p>The departments table contains information about each department in the store, including deparment number, department name, and overhead costs.</p>
-  			![Image of departments table](readme_images/departments_table.png)
+  			<img src="readme_images/departments_table.png">
   		</li>
   	</ul>
   	<p>In the Supervisor Portal, the products table and departments table are joined to calculate product sales and total profits for each department.</p>
