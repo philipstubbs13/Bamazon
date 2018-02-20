@@ -59,8 +59,14 @@ The first step is to clone the project repository to a local directory on your c
   <li>
   	<p><b>schema.sql</b>: The database schema (that is, how objects are grouped in the database). For this project, the database includes two tables, a products table and a departments table.</p>
   	<ul>
-  		<li>The products table contains information about each product that is sold in the store, including item number/id, product name, department name, price, stock quantity, and product sales.</li>
-  		<li> The departments table contains information about each department in the store, including deparment number, department name, and overhead costs.</li>
+  		<li>
+  			<p>The products table contains information about each product that is sold in the store, including item number/id, product name, department name, price, stock quantity, and product sales.</p>
+  			![Image of products table](readme_images/products_table.png)
+  		</li>
+  		<li>
+  			<p>The departments table contains information about each department in the store, including deparment number, department name, and overhead costs.</p>
+  			![Image of departments table](readme_images/departments_table.png)
+  		</li>
   	</ul>
   	<p>In the Supervisor Portal, the products table and departments table are joined to calculate product sales and total profits for each department.</p>
   </li>
