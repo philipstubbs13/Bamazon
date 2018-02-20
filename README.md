@@ -26,7 +26,7 @@ To set up this application on your own computer, perform the following steps:
   3. [Install MySQL Workbench](#install-mysql)
   3. [Install the dependencies](#dependencies)
   4. [Set up database](#database-setup)
-  5. [Create a .env file to store MySQL Password](#create-env)
+  5. [Create a .env file to store MySQL password](#create-env)
 
 ### <a name="clone-repository"></a> Clone the repository
 The first step is to clone the project repository to a local directory on your computer. To clone the repository, run the following commands:
@@ -46,7 +46,7 @@ The first step is to clone the project repository to a local directory on your c
 <p>After you clone the repository, navigate to the project root directory (Bamazon). The project directory structure is set up as follows:</p>
 <ul>
   <li> 
-  	<p><b>BamazonCustomer.js</b>: Bamazon Customer Portal Node Application. Running this application displays information for all of the items on sale, including item number, product name, department name, and the price of the product for sale.</p>
+  	<p><b>BamazonCustomer.js</b>: Bamazon Customer Portal Node Application. Running this application displays information for all of the items on sale, including item number, product name, department name, and product price.</p>
   	<p>When customer order is processed, stock quantity and product sales are updated in the database, and the amount that the customer's account is charged is displayed on the screen.</p>
   </li>
   <li>
@@ -54,7 +54,7 @@ The first step is to clone the project repository to a local directory on your c
   </li>
   <li>
   	<p><b>BamazonSupervisor.js</b>: Bamazon Supervisor Portal Node Application. Runing this application displays a list of menu options that store supervisors can choose from. This application allows supervisors to add a new department to the store by providing information through a series of inquirer prompts.</p>
-  	<p>This application also allows supervisors to see a summary (in table format) of product sales by department. Total profit is also displayed in the same table. Total profit is equal to department product sales minus department overhead costs). Note that total profit is calculated on the fly and is stored outside of the database.</p>
+  	<p>This application also allows supervisors to see a summary (in table format) of product sales by department. Total profit is also displayed in the same table. Total profit is equal to department product sales minus department overhead costs. Note that total profit is calculated on the fly and is stored outside of the database.</p>
   </li>
   <li>
   	<p><b>schema.sql</b>: The database schema (that is, how objects are grouped in the database). For this project, the database includes two tables, a products table and a departments table.</p>
@@ -74,18 +74,18 @@ The first step is to clone the project repository to a local directory on your c
 <p>After you clone the repository to a local directory, change directory to the project root directory (Bamazon) and run the following command to install the required npm packages:</p>
 <pre>npm install</pre>
 <ul>
-	<li>inquirer npm package (https://www.npmjs.com/package/twitter) - used to prompt customers when purchasing a product, managers when adding inventory or adding a new product, and supervisors when adding a new department. </li>
+	<li>inquirer npm package (https://www.npmjs.com/package/inquirer) - used to prompt customers when purchasing a product, managers when adding inventory or adding a new product, and supervisors when adding a new department. </li>
 	<li>cli-color npm package (https://www.npmjs.com/package/cli-color) - used to add color to the application.</li>
-  	<li>mysql npm package (https://www.npmjs.com/package/mysql) - used to create a connection to the MySQL database.</li>
+  	<li>mysql npm package (https://www.npmjs.com/package/mysql) - used to create a connection to the MySQL database via the command line.</li>
   	<li>cli-table npm package (https://www.npmjs.com/package/cli-table) - used to render tables on the command line from node.js scripts.</li>
-  	<li>dotenv npm package (https://www.npmjs.com/package/dotenv) - used to retrieve the MySQL password from a .env file</li>
+  	<li>dotenv npm package (https://www.npmjs.com/package/dotenv) - used to retrieve the MySQL password from a .env file and pass the value to the application when running it from the command line.</li>
 </ul>
 <p>Version information for each of these packages is available in the package.json file in the project root directory.</p>
 
 ## <a name="database-seutp"></a> Set up database
 
-## <a name="create-env"></a> Create a .env file to store MySQL Password
-To connect to the MySQL database, you need to provide your own .env file.
+## <a name="create-env"></a> Create a .env file to store MySQL password
+To connect to the MySQL database via the command line, you need to provide your own .env file.
 
 Create a file named .env in the project root directory (Bamazon) with the following contents. Replace <i>mysql_password</i> with your actual MySQL password.
 
