@@ -69,6 +69,7 @@ The first step is to clone the project repository to a local directory on your c
   		</li>
   	</ul>
   	<p>In the Supervisor Portal, the products table and departments table are joined to calculate product sales and total profits for each department.</p>
+  	<img src="readme_images/department_sales.png">
   </li>
   <li><b>package.json</b>: Lists the project dependencies (third party npm packages) and their version numbers.</li>
   <li><b>.gitignore</b>: Any file or directory listed inside this file will not be tracked by GitHub when code is committed.</li>
