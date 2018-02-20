@@ -83,6 +83,75 @@ The first step is to clone the project repository to a local directory on your c
 <p>Version information for each of these packages is available in the package.json file in the project root directory.</p>
 
 ## <a name="database-seutp"></a> Set up database
+To set up a database that you can use with this application, perform the following steps:
+1. Open the schema.sql file in the project root directory in MySQL Workbench.
+2. Execute the following statements in the schema.sql file.
+<pre>
+CREATE DATABASE bamazon;
+
+USE bamazon;
+<pre>
+Running these statements creates a database called bamazon and sets it as the current database being used.
+
+3. Execute the following statement in the schema.sql file to create a table called products.
+<pre>
+CREATE TABLE products (
+	-- Unique id for each product --
+    item_id INT(11) AUTO_INCREMENT NOT NULL,
+    -- Name of product --
+	product_name VARCHAR(100) NOT NULL,
+    -- Department name --
+	department_name VARCHAR(100) NOT NULL,
+    -- Cost to customer --
+	price DECIMAL(10,2) NOT NULL,
+    -- How much of the product is available in stores. --
+	stock_quantity INT(11) NOT NULL,
+    -- Make item_id the primary key --
+    product_sales DECIMAL (10,2) NOT NULL,
+	PRIMARY KEY (item_id)
+);
+</pre>
+This table includes columns for item number, product name, price, stock quantity, and product sales.
+
+4. To populate the products table with product information, execute the following statement in the schema.sql file.
+<pre>
+INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales)
+VALUES ("Downhill skis", "Winter Sports", 225.89, 35, 0), 
+("Under Armour Stephen Curry Indoor/Outdoor Basketball", "Team Sports", 29.00, 25, 0),
+("Kayak", "Water Sports", 149.89, 20, 0),
+("Hockey stick", "Winter Sports", 68.88, 37, 0),
+("Paddleboard", "Water Sports", 299.99, 18, 0),
+("Tent", "Camping and Hiking", 39.79, 23, 0),
+("Backpack", "Camping and Hiking", 35.49, 15, 0),
+("Mountain Bike", "Cycling", 131.99, 10, 0),
+("Hockey skates", "Winter Sports", 69.99, 22, 0),
+("Fitbit Flex 2", "Exercise and Fitness", 59.00, 14, 0);
+</pre>
+
+5. Execute the following statement in the schema.sql file to create a second table called departments.
+<pre>
+CREATE TABLE departments (
+	-- Unique id for each department --
+    department_id INT(11) AUTO_INCREMENT NOT NULL,
+    -- Name of department --
+	department_name VARCHAR(100) NOT NULL,
+    -- Dummy number set for each department --
+	over_head_costs VARCHAR(100) NOT NULL,
+	PRIMARY KEY (department_id)
+);
+</pre>
+<p>This table includes columns for department number, department name, and department costs.</p>
+
+6. To populate the departments table with department information, execute the following statement in the schema.sql file.
+<pre>
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ("Winter Sports", 10000),
+("Team Sports", 19300),
+("Water Sports", 60000),
+("Camping and Hiking", 25150),
+("Cycling", 30600),
+("Exercise and Fitness", 40500);
+</pre>
 
 ## <a name="create-env"></a> Create a .env file to store MySQL password
 To connect to the MySQL database via the command line, you need to provide your own .env file.
