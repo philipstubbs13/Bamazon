@@ -51,7 +51,14 @@ VALUES ("Winter Sports", 10000),
 ("Exercise and Fitness", 40500);
 
 SELECT DISTINCT departments.department_id, departments.department_name, 
-departments.over_head_costs, products.product_sales
+departments.over_head_costs, SUM(products.product_sales) as department_sales
 FROM departments
-INNER JOIN products ON (departments.department_name = products.department_name);
+INNER JOIN products ON (departments.department_name = products.department_name)
+GROUP BY department_name
+ORDER BY department_sales desc;
+
+
+SELECT department_name, SUM(product_sales) as department_sales 
+FROM  products 
+GROUP BY department_name;
 
