@@ -57,7 +57,7 @@ The first step is to clone the project repository to a local directory on your c
   	<p>This application also allows supervisors to see a summary (in table format) of product sales by department. Total profit is also displayed in the same table. Total profit is equal to department product sales minus department overhead costs. Note that total profit is calculated on the fly and is stored outside of the database.</p>
   </li>
   <li>
-  	<p><b>schema.sql</b>: The database schema (that is, how objects are grouped in the database). For this project, the database includes two tables, a products table and a departments table.</p>
+  	<p><b>schema.sql</b>: The database schema. The schema is what describes the structure of each table, and the datatypes that each column of the table can contain. For this project, the database includes two tables, a products table and a departments table.</p>
   	<ul>
   		<li>
   			<p>The products table contains information about each product that is sold in the store, including item number/id, product name, department name, price, stock quantity, and product sales.</p>
