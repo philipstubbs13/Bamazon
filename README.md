@@ -181,11 +181,13 @@ This file will be used by the dotenv npm package, which will pass the password v
 
 
 ## <a name="app-workflow"></a> App workflow
-The application includes three user portals.
-	* [Supervisor Portal](#supervisor-workflow)
-	* [Manager Portal](#manager-workflow)
-	* [Customer Portal](#customer-workflow)
-The following sections describe the user workflow for each of these portals.
+<p>The application includes three user portals.</p>
+<ul>
+	<li>Supervisor Portal</li>
+	<li>Manager Portal</li>
+	<li>Customer Portal</li>
+</ul>
+<p>The following sections describe the user workflow for each of these portals.</p>
 
 ### <a name="supervisor-workflow"> Supervisor workflow
 <p> In the Supervisor Portal, a store supervisor can create a new department and view product sales by department.</p>
@@ -209,7 +211,12 @@ BAMAZON SUPERVISOR PORTAL
 
 <p>To get this information from the database, a connection query needs to be constructed to join the departments table and products table.</p>
 <pre>
-	"SELECT DISTINCT departments.department_id, departments.department_name, departments.over_head_costs, SUM(products.product_sales) as department_sales FROM departments INNER JOIN products ON (departments.department_name = products.department_name) GROUP BY department_name ORDER BY department_sales desc";
+SELECT DISTINCT departments.department_id, departments.department_name, 
+departments.over_head_costs, SUM(products.product_sales) as department_sales
+FROM departments
+INNER JOIN products ON (departments.department_name = products.department_name)
+GROUP BY department_name
+ORDER BY department_sales desc;
 </pre>
 <p>In this query, note the following:</p>
 <ul>
@@ -217,8 +224,8 @@ BAMAZON SUPERVISOR PORTAL
 	<li>The SQL SUM function is used to calculate product sales for all the products in a department. The SUM of the product sales from the products table for each department is selected. This information is stored using the alias department_sales.</li>
 	<li>Adding DISTINCT to the query ensures that there are no duplicate departments in the joined table.</li>
 	<li>INNER JOIN is used to join from the departments table where deparment name from departments table equals department name from products table.</li>
-	<li>This query will group the table by the department_name column.</li>
-	<li>This query will be ordered by the department_sales column (that is, from highest sales to lowest)</li>
+	<li>This query groups the table by the department_name column.</li>
+	<li>This query orders the results by the department_sales column (that is, from highest sales to lowest)</li>
 </ul>
 <p>Also, you will notice that total profit is not stored in the database. Total profit is calculated on the fly by taking the difference between department sales and overhead costs.</p>
 
