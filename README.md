@@ -92,8 +92,8 @@ The first step is to clone the project repository to a local directory on your c
 ## <a name="database-seutp"></a> Set up database
 To set up a database that you can use with this application, perform the following steps:
 <ol>
-<li><p>Open the schema.sql file in the project root directory in MySQL Workbench.</p></li>
-<li><p>Execute the following statements in the schema.sql file.</p>
+<li><p>Open the schema.sql file in the project root directory and paste the contents of this file into MySQL Workbench.</p></li>
+<li><p>Execute the following statements:</p>
 <pre>
 CREATE DATABASE bamazon;
 
@@ -101,7 +101,7 @@ USE bamazon;
 </pre>
 <p>Running these statements creates a database called bamazon and sets it as the current database being used.</p>
 </li>
-<li><p>Execute the following statement in the schema.sql file to create a table called products.</p>
+<li><p>Execute the following statement to create a table called products.</p>
 <pre>
 CREATE TABLE products (
 	-- Unique id for each product --
@@ -122,7 +122,7 @@ CREATE TABLE products (
 <p>This table includes columns for item number, product name, price, stock quantity, and product sales.</p>
 </li>
 
-<li><p>To populate the products table with product information, execute the following statement in the schema.sql file.</p>
+<li><p>To populate the products table with product information, execute the following statement:</p>
 <pre>
 INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales)
 VALUES ("Downhill skis", "Winter Sports", 225.89, 35, 0), 
@@ -138,7 +138,7 @@ VALUES ("Downhill skis", "Winter Sports", 225.89, 35, 0),
 </pre>
 </li>
 
-<li><p>Execute the following statement in the schema.sql file to create a second table called departments.</p>
+<li><p>Execute the following statement to create a second table called departments.</p>
 <pre>
 CREATE TABLE departments (
 	-- Unique id for each department --
@@ -153,7 +153,7 @@ CREATE TABLE departments (
 <p>This table includes columns for department number, department name, and department costs.</p>
 </li>
 
-<li><p>To populate the departments table with department information, execute the following statement in the schema.sql file.</p>
+<li><p>To populate the departments table with department information, execute the following statement:</p>
 <pre>
 INSERT INTO departments (department_name, over_head_costs)
 VALUES ("Winter Sports", 10000),
