@@ -205,7 +205,7 @@ This file will be used by the dotenv npm package, which will pass the password v
 <img src="readme_images/select_dept.png">
 
 <p>After you select a department, all the items for sale within that department will be displayed, and you will be prompted to make a purchase, select another department, or exit the store.</p>
-<img src="readme_images/department_items_on_sale.png">
+<img src="readme_images/department_items_on_sale.PNG">
 
 #### Making a purchase
 To make a purchase, you need to enter the item number for the item you want to purchase and the quantity (how much you want to purchase).
