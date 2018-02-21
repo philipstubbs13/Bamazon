@@ -93,8 +93,7 @@ function showItemsForSale() {
 							"Item number: " + res[i].item_id + "\r\n" +
 							"Item: " + res[i].product_name + "\r\n" +
 							"Price: $" + res[i].price + "\r\n" +
-							"Department: " + res[i].department_name + "\r\n" +
-							("=====================================")
+							"====================================="
 							console.log(items);
 						}
 					//After customer has a chance to look over the items, ask them if they want to buy something today.
@@ -110,20 +109,24 @@ function buyItemOrLeave() {
 	//Use inquire to ask customers if they want to buy something from the list.
 	var buyItem = [
 	 {
-	    type: 'confirm',
+	    type: 'list',
 	    name: 'readyToBuy',
-	    message: 'Do you want to buy something today?',
-	    default: true
+	    message: 'What do you want to do?',
+	    choices: ['Make a purchase', 'Select another department', 'Exit']
 	  }
 	];
 
 	inquirer.prompt(buyItem).then(answers => {
 		//If customer confirms that they want to buy something...
 		//Then, use inquirer to prompt them for the item number of the product they want to buy.
-		if (answers.readyToBuy){
+		if (answers.readyToBuy === 'Make a purchase'){
 			console.log("What would you like to buy?");
 			console.log("Enter the item nuber of the item that you would like to buy.");
 			selectItem();
+		}
+
+		else if (answers.readyToBuy === 'Select another department') {
+			showItemsForSale();
 		}
 
 		else {
