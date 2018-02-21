@@ -210,7 +210,12 @@ This file will be used by the dotenv npm package, which will pass the password v
 <img src="readme_images/department_items_on_sale.PNG">
 
 #### Making a purchase
-To make a purchase, you need to enter the item number for the item you want to purchase and the quantity (how much you want to purchase).
+<p>To make a purchase, you need to enter the item number for the item you want to purchase and the quantity (how much you want to purchase).</p>
+<p>After your order is placed, enter Y to confirm and complete the purchase.</p>
+<img src="readme_images/make_purchase.png">
+
+<p>After you confirm the purchase, the order details, including the amount your account was charged, will be displayed on the screen.</p>
+<img src="readme_images/order_details.png">
 
 ### <a name="manager-workflow"> Manager workflow
 <p>In the Manager Portal, a store manager can perform several tasks. They can view all products sold, view items that have low inventory, add inventory, and add a new product.</p>
