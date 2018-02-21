@@ -121,7 +121,7 @@ function buyItemOrLeave() {
 		//Then, use inquirer to prompt them for the item number of the product they want to buy.
 		if (answers.readyToBuy === 'Make a purchase'){
 			console.log("What would you like to buy?");
-			console.log("Enter the item nuber of the item that you would like to buy.");
+			console.log("Enter the item number of the item that you would like to buy.");
 			selectItem();
 		}
 
@@ -147,7 +147,7 @@ function selectItem() {
 		//If there is an error, throw error.
 		if(err) throw err;
 
-		//To make purchase and checkout, go through series of prompts using inquirer.
+		//To make purchase, prompt user for item number and quantity.
 		var selectItem = [
 		 {
 		    type: 'text',
@@ -171,20 +171,11 @@ function selectItem() {
 	          }
 	          return false;
 	      	}
-	        },
-
-	       {
-	       	type: 'confirm',
-	       	name: 'confirmOrder',
-	       	message: "Are you sure? Enter Y to confirm and complete order. Enter N to cancel.",
-	       	default: true
-	       }
+	      }
 		];
 
 
 		inquirer.prompt(selectItem).then(answers => {
-			//If customer confirms order...
-			if (answers.confirmOrder) {
 				//console.log(res);
 				//console.log("User entered: " + answers.itemNumber);
 				var customerItem;
@@ -225,49 +216,74 @@ function selectItem() {
 				//AND
 				//If there is enough in stock right now, place order and charge customer for purchase.
 				else if (availableItemNumbers.indexOf(parseInt(answers.itemNumber)) > -1 && customerItem.stock_quantity > answers.howMany) {
+						//Create variable to hold the number of items that the customer wants to purchase.
+						var customerQuantity = answers.howMany;
 						//Create variable that we can use to update product stock quantity in database.
 						//Stock quantity equals current stock minus quantity customer purchased.
-						var newQuantity = customerItem.stock_quantity - answers.howMany;
+						var newQuantity = customerItem.stock_quantity - customerQuantity;
 						//console.log("Updating quantity... \n" + newQuantity);
 						//Create variable to calculate how much to charge customer.
-						var customerTotal = customerItem.price * answers.howMany;
+						var customerTotal = customerItem.price * customerQuantity;
 						//Create variable to update/calculate productSalesTotal based on customerTotal.
 						var productSalesTotal = customerItem.product_sales + customerTotal;
+						//Show the pending order information to customer before completing their order.
+						var pendingOrderDetails = 
+							"========================================================" + "\r\n" +
+							"Order details" + "\r\n" +
+							"Your item: " + customerItem.product_name + "\r\n" +
+							"Quantity: " + customerQuantity + "\r\n" +
+							"Your total is $" + customerTotal + "." + "\r\n" +
+							"========================================================" 
+						console.log(pendingOrderDetails);
 
-						//Create connection query to database. 
-						//Run UPDATE statement on products table to update product stock quantity in database for the specified item number.
-						var query = connection.query(
-							"UPDATE products SET ? WHERE ?",
-							[
-								{
-									stock_quantity: newQuantity,
-									product_sales: productSalesTotal
-								},
-								{
-									item_id: customerItem.item_id
-								}
-							],
-							function(err, res) {
-								//console.log("Item id: " + customerItem.item_id);
-								//console.log("quantity: " + newQuantity);
+						//Get confirmation from the customer to place the order.
+						var confirmOrder = [
+							{
+					       	type: 'confirm',
+					       	name: 'confirmOrder',
+					       	message: "Are you sure? Enter Y to confirm and complete order. Enter N to cancel.",
+					       	default: true
+					       }
+					    ];
+
+					    inquirer.prompt(confirmOrder).then(answers => {
+					    	//If customer confirms order, place order and update database.
+					    	if (answers.confirmOrder) {
+								//Create connection query to database. 
+								//Run UPDATE statement on products table to update product stock quantity in database for the specified item number.
+								var query = connection.query(
+									"UPDATE products SET ? WHERE ?",
+									[
+										{
+											stock_quantity: newQuantity,
+											product_sales: productSalesTotal
+										},
+										{
+											item_id: customerItem.item_id
+										}
+									],
+									function(err, res) {
+										//console.log("Item id: " + customerItem.item_id);
+										//console.log("quantity: " + newQuantity);
+									}
+								)
+								//Display order details and total amount that was charged to their Bamazon account.
+								console.log("Order complete");
+								console.log("Item ordered: " + customerItem.product_name);
+								console.log("Quantity: " + customerQuantity);
+								console.log("Your Bamazon account was charged $" + customerTotal + ".");
+								continueShopping();
 							}
-						)
-						//Display order details and total price to customer.
-						console.log("Order complete");
-						console.log("Item ordered: " + customerItem.product_name);
-						console.log("Quantity: " + answers.howMany);
-						console.log("Your total is $" + customerTotal + ".");
-						continueShopping();
-				}
-			}
 
-			//If customer cancels order....
-			else {
-				console.log("Thanks for shopping with us. Have a nice day!");
-			}
-		});
-	});
-	;
+							//If customer cancels order...
+							else {
+								console.log("Order cancelled.");
+								setTimeout(continueShopping, 2000);
+							}
+						})
+					}
+				});
+			});
 }
 
 //Create function to ask customer if they want to continue shopping after an order is placed.

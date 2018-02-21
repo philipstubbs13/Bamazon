@@ -10,7 +10,9 @@
   * [Issues](#issues)
 
 ## <a name="demo"></a> Demo
-Video demo: 
+* Customer Portal:
+* Manager Portal:
+* Supervisor Portal:
 
 ## <a name="about-this-project"></a> About this project
 This project is a command line application built using Node.js, Javascript, the inquirer npm package, and a MySQL database. It is an Amazon-like storefront (hence, the name Bamazon) that takes in customer orders on various sporting goods and outdoor items through the Bamazon Customer Portal. When a customer order is taken in the Customer Portal, the stock quantity for the product that is being purchased decreases by how much of that product the customer decides to buy. 
