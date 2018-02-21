@@ -189,12 +189,33 @@ This file will be used by the dotenv npm package, which will pass the password v
 </ul>
 <p>The following sections describe the user workflow for each of these portals.</p>
 
+### <a name="customer-workflow"> Customer workflow
+<p>The Customer Portal is where customers can browse products by department and make purchases.</p>
+
+#### Accessing the Customer Portal
+<p>To access the Customer Portal, run the following command:</p>
+<pre>node bamazonCustomer.js</pre>
+
+<p>When you run this command, you will see a welcome message and be asked if you want to see what is on sale today.</p>
+<p>Enter <b>Y</b> to continue to the Customer Portal.</p>
+<img src="readme_images/customer_welcome.png">
+
+#### Selecting a department
+<p>After you are in the Customer Portal, you will be prompted to select a department.</p>
+<img src="readme_images/select_dept.png">
+
+<p>After you select a department, all the items for sale within that department will be displayed, and you will be prompted to make a purchase, select another department, or exit the store.</p>
+<img src="readme_images/department_items_on_sale.png">
+
+#### Making a purchase
+To make a purchase, you need to enter the item number for the item you want to purchase and the quantity (how much you want to purchase).
+
 ### <a name="manager-workflow"> Manager workflow
 <p>In the Manager Portal, a store manager can perform several tasks. They can view all products sold, view items that have low inventory, add inventory, and add a new product.</p>
 
 #### Accessing the Manager Portal
-<p>To access the Manager Portal, run the following command:
-<pre>node bazamonManager.js</pre>
+<p>To access the Manager Portal, run the following command:</p>
+<pre>node bamazonManager.js</pre>
 
 <p>When you run this command, you will see a list of menu options.</p>
 <pre>
