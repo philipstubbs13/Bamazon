@@ -23,7 +23,7 @@ var connection = mysql.createConnection({
 
 //Create function that allows users with manager permissions to view certain menu options.
 function showManagerScreen() {
-	console.log("BAMAZON FOR MANAGERS");
+	console.log("Bamazon Manager Portal");
 	//A manager user can view products for sale, view low inventory, add to inventory, and add a new product.
 	var chooseManagerAction = [
 	 {
@@ -129,7 +129,7 @@ function viewLowInventory() {
 //Create a function that allows manager user to add a new product to the store.
 function addNewProduct(){
 	//Create connection query to the database to query all the department names available in the database.
-	connection.query("SELECT DISTINCT department_name FROM products", function(err, res){
+	connection.query("SELECT DISTINCT department_name FROM departments", function(err, res){
 		//If there is an error, throw error.
 		if(err) throw err;
 		//Use inquirer to prompt user for the new product information (product name, department, price, and quantity in stock).

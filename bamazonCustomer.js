@@ -41,6 +41,7 @@ function showCustomerScreen() {
 		else {
 			//Then, exit application.
 			console.log("Thanks for shopping with us! Have a nice day!");
+			connection.end();
 			return;
 		}
 	});
@@ -152,21 +153,41 @@ function selectItem() {
 				//console.log("User entered: " + answers.itemNumber);
 				var customerItem;
 				for (var i = 0; i < res.length; i++){
-				if (res[i].item_id === parseInt(answers.itemNumber)) {
+					var availableItemNumbers = [];
+					availableItemNumbers.push(res[i].item_id);
+					if (res[i].item_id === parseInt(answers.itemNumber)) {
 				 		customerItem = res[i];
 				 	}
 				 }
 				//console.log(customerItem);
 
-				//If stock quantity is less than the quantity that the customer wants, 
-				//notify customer that store doesn't have enough in stock right now.
-				if (customerItem.stock_quantity < answers.howMany) {
-				 	console.log("Sorry, we only have " + customerItem.stock_quantity + " left on stock right now.");
-				 	console.log("Select a different amount.");
+				//If item number that user entered is invalid (does not exist in availableItemNumbers array),
+				//Then, display error message that item number is not valid and return to Customer Home Screen.
+				if (availableItemNumbers.indexOf(parseInt(answers.itemNumber)) === -1) {
+					var invalidItemNumberError = 
+					"==========================================================================================================" + "\r\n" +
+					"Item number " + answers.itemNumber +  " was not found." + "\r\n" +
+					"Enter valid item number and try again." + "\r\n" +
+					"=========================================================================================================="
+					console.log(invalidItemNumberError);
+					//Return to Customer Home screen.
+					setTimeout(showItemsForSale, 4000);
 				}
 
+				//If stock quantity is less than the quantity that the customer wants, 
+				//notify customer that store doesn't have enough in stock right now.
+				else if (customerItem.stock_quantity < answers.howMany) {
+				 	console.log("Sorry, we only have " + customerItem.stock_quantity + " left on stock right now.");
+				 	console.log("Select a different amount or choose another item.");
+				 	//Return to Customer Home screen.
+				 	setTimeout(showItemsForSale, 2000);
+
+				}
+
+				//If the item number that the user entered is valid (exists in the availableItemNumbers array)
+				//AND
 				//If there is enough in stock right now, place order and charge customer for purchase.
-				else if (customerItem.stock_quantity > answers.howMany) {
+				else if (availableItemNumbers.indexOf(parseInt(answers.itemNumber)) > -1 && customerItem.stock_quantity > answers.howMany) {
 						//Create variable that we can use to update product stock quantity in database.
 						//Stock quantity equals current stock minus quantity customer purchased.
 						var newQuantity = customerItem.stock_quantity - answers.howMany;

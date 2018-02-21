@@ -23,10 +23,10 @@ var connection = mysql.createConnection({
 
 //Create function to show the menu options that a store supervisor can access.
 function showSupervisorScreen() {
-	console.log("BAMAZON FOR SUPERVISORS");
+	console.log("Bamazon Supervisor Portal");
 	//Create inquirer prompt to display list of available menu options/actions that a supervisor can access.
 	//A supervisor can view product sales by department and create a new department.
-	var chooseManagerAction = [
+	var chooseSupervisorAction = [
 	 {
 	    type: 'list',
 	    name: 'supervisorList',
@@ -35,7 +35,7 @@ function showSupervisorScreen() {
 	  }
 	];
 
-	inquirer.prompt(chooseManagerAction).then(answers => {
+	inquirer.prompt(chooseSupervisorAction).then(answers => {
 		//If supervisor user selects view product sales by department, show table that displays product sales for each department.
 		if (answers.supervisorList === "View Product Sales by Department") {
 			viewProdSalesByDept();

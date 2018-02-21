@@ -62,3 +62,4 @@ SELECT department_name, SUM(product_sales) as department_sales
 FROM  products 
 GROUP BY department_name;
 
+
