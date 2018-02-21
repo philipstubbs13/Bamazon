@@ -55,20 +55,53 @@ function showItemsForSale() {
 		//If there is an error, throw error.
 		if(err) throw err;
 
-		//Otherwise, log the items for sale to the terminal.
-		console.log("Items for sale")
-		for (var i = 0; i < res.length; i++){
-			var items = 
-			"====================================" + "\r\n" +
-			"Item number: " + res[i].item_id + "\r\n" +
-			"Item: " + res[i].product_name + "\r\n" +
-			"Price: $" + res[i].price + "\r\n" +
-			"Department: " + res[i].department_name + "\r\n" +
-			("=====================================")
-			console.log(items);
-		}
-		//After customer has a chance to look over the items, ask them if they want to buy something today.
-		buyItemOrLeave();
+		//Use inquirer to prompt customer to select a department
+		//console.log(res);
+		var chooseDepartment = [
+			{
+			 	type: 'list',
+			 	name: 'productDepartment',
+			 	message: 'Select a department',
+			 	choices: function() {
+			 		var departmentsArray = [];
+			 		for (var i = 0; i < res.length; i++) {
+			 			departmentsArray.push(res[i].department_name);
+			 		}
+			 		return departmentsArray;
+			 	}
+			}
+		];
+		//After customer selects department.
+		inquirer.prompt(chooseDepartment).then(answers => {
+			var customerDept = answers.productDepartment;
+			//Search the database for only the items in the department that the customer selected.
+			connection.query("SELECT * from products WHERE ?", 
+				{
+					department_name: customerDept
+				},
+				function(err, res) {
+					if (err){
+						console.log("error: " + err);
+					}
+					//console.log(res);
+						//Show only the items in the department that the customer selected.
+						console.log("Items for sale");
+						console.log("Department: " + customerDept);
+						for (var i = 0; i < res.length; i++){
+							var items = 
+							"====================================" + "\r\n" +
+							"Item number: " + res[i].item_id + "\r\n" +
+							"Item: " + res[i].product_name + "\r\n" +
+							"Price: $" + res[i].price + "\r\n" +
+							"Department: " + res[i].department_name + "\r\n" +
+							("=====================================")
+							console.log(items);
+						}
+					//After customer has a chance to look over the items, ask them if they want to buy something today.
+					buyItemOrLeave();
+				}
+			);
+		});
 	});
 }
 
@@ -152,13 +185,14 @@ function selectItem() {
 				//console.log(res);
 				//console.log("User entered: " + answers.itemNumber);
 				var customerItem;
+				var availableItemNumbers = [];
 				for (var i = 0; i < res.length; i++){
-					var availableItemNumbers = [];
 					availableItemNumbers.push(res[i].item_id);
 					if (res[i].item_id === parseInt(answers.itemNumber)) {
 				 		customerItem = res[i];
 				 	}
 				 }
+				 //console.log(availableItemNumbers);
 				//console.log(customerItem);
 
 				//If item number that user entered is invalid (does not exist in availableItemNumbers array),
@@ -171,7 +205,7 @@ function selectItem() {
 					"=========================================================================================================="
 					console.log(invalidItemNumberError);
 					//Return to Customer Home screen.
-					setTimeout(showItemsForSale, 4000);
+					setTimeout(showItemsForSale, 3000);
 				}
 
 				//If stock quantity is less than the quantity that the customer wants, 
