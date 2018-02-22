@@ -232,6 +232,15 @@ var connection = mysql.createConnection({
 <p>After you confirm the purchase, the order details, including the amount your account was charged, will be displayed on the screen.</p>
 <img src="readme_images/order_details.png">
 
+#### Insuffient quantity in stock
+<p>If you the number you enter for quantity is larger than the number the store currently has in stock, you will receive an error message similar to the following example.</p>
+<img src="readme_images/insufficient_quantity.png">
+<p>The application will take you back to the list of departments where you can enter a different quantity or shop a different department.</p>
+
+#### Item not found
+<p>If you enter an invalid item number (that is, item not found) when making a purchase, you will get an error message saying that the item was not found. The application will take you back to the list of departments so that you can try again.</p>
+<img src="readme_images/item_not_found.png">
+
 ### <a name="manager-workflow"> Manager workflow
 <p>In the Manager Portal, a store manager can perform several tasks. They can view all products sold, view items that have low inventory, add inventory, and add a new product.</p>
 
