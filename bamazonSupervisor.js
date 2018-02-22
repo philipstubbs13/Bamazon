@@ -31,7 +31,7 @@ function showSupervisorScreen() {
 	    type: 'list',
 	    name: 'supervisorList',
 	    message: "What would you like to do?",
-	    choices: ['View Product Sales by Department', 'Create New Department', 'Exit Application'],
+	    choices: ['View Product Sales by Department', 'Create New Department', 'Exit Supervisor Portal'],
 	  }
 	];
 
@@ -47,7 +47,7 @@ function showSupervisorScreen() {
 		}
 
 		//If supervisor doesn't want to do anything else and wants to exit, end database connection and exit the application.
-		else if (answers.supervisorList === "Exit Application") {
+		else if (answers.supervisorList === "Exit Supervisor Portal") {
 			exitApplication();
 		}
 	});
@@ -84,11 +84,14 @@ function viewProdSalesByDept() {
 		//Loop through the database query results and push the results to the table and populate table with the department data.
 		for (var i=0; i < res.length; i++) {
 			//Calculate total profit for each department.
- 			//Total profit = department sales - overhead costs.
- 			var totalProfit = res[i].department_sales - res[i].over_head_costs;			
+ 			//Total profit = department sales - overhead costs
+ 			var departmentSales = res[i].department_sales;
+ 			departmentSales.toFixed(2);
+ 			var totalProfit = departmentSales - res[i].over_head_costs;	
+ 			//Using Javascript toFixed method to limit total profit to two numbers after the decimal point.	
 			// table is an Array, so you can `push`, `unshift`, `splice` and friends 
 			table.push(
-		    	[res[i].department_id, res[i].department_name, res[i].over_head_costs, res[i].department_sales, totalProfit],
+		    	[res[i].department_id, res[i].department_name, res[i].over_head_costs, departmentSales, totalProfit.toFixed(2)],
 			);
 		} 
 		//Display table to terminal.
