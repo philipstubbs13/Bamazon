@@ -280,7 +280,7 @@ function addToInventory(){
 				"==========================================================================================================" + "\r\n" +
 				"Item number " + answers.itemNumber +  " was not found in the system." + "\r\n" +
 				"Enter valid item number and try again." + "\r\n" +
-				"To view a list of products and their associated item numbers, select 'View Products for Sale' from the Manager Home screen." + "\r\n" +
+				"To view a list of products and their associated item numbers, select 'View Products for Sale' from the menu." + "\r\n" +
 				"=========================================================================================================="
 				console.log(invalidItemNumberError);
 				//Return to Manager Home screen.

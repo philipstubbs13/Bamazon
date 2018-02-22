@@ -205,7 +205,7 @@ function selectItem() {
 				//If stock quantity is less than the quantity that the customer wants, 
 				//notify customer that store doesn't have enough in stock right now.
 				else if (customerItem.stock_quantity < answers.howMany) {
-				 	console.log("Sorry, we only have " + customerItem.stock_quantity + " left on stock right now.");
+				 	console.log("Sorry, we have " + customerItem.stock_quantity + " left on stock right now.");
 				 	console.log("Select a different amount or choose another item.");
 				 	//Return to Customer Home screen.
 				 	setTimeout(showItemsForSale, 2000);
@@ -215,7 +215,7 @@ function selectItem() {
 				//If the item number that the user entered is valid (exists in the availableItemNumbers array)
 				//AND
 				//If there is enough in stock right now, place order and charge customer for purchase.
-				else if (availableItemNumbers.indexOf(parseInt(answers.itemNumber)) > -1 && customerItem.stock_quantity > answers.howMany) {
+				else if (availableItemNumbers.indexOf(parseInt(answers.itemNumber)) > -1 && customerItem.stock_quantity >= answers.howMany) {
 						//Create variable to hold the number of items that the customer wants to purchase.
 						var customerQuantity = answers.howMany;
 						//Create variable that we can use to update product stock quantity in database.
