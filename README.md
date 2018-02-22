@@ -29,6 +29,7 @@ To set up this application on your own computer, perform the following steps:
   3. [Install the dependencies](#dependencies)
   4. [Set up database](#database-setup)
   5. [Create a .env file to store MySQL password](#create-env)
+  6. [Create database connection](#create-db-connection)
 
 ### <a name="clone-repository"></a> Clone the repository
 The first step is to clone the project repository to a local directory on your computer. To clone the repository, run the following commands:
@@ -272,13 +273,7 @@ To access the Supervisor Portal, run the following command:
 <pre>node bazamonSupervisor.js</pre>
 
 <p>When you run this command, you will see a list of menu options.</p>
-<pre>
-BAMAZON SUPERVISOR PORTAL
-? What would you like to do? (Use arrow keys)
-> View Product Sales by Department
-  Create New Department
-  Exit Application
- </pre>
+<img src="readme_images/supervisor_portal_menu.png">
 
 #### View Product Sales by Department
 <p>If you select <b>View Product Sales by Department</b> from the menu, you will see a table of all the departments and information about those departments, including overhead costs, department sales, and total profit.</p>
@@ -312,10 +307,11 @@ ORDER BY department_sales desc;
 
 <p>The new department is added to the departments table in the database.</p>
 <img src="readme_images/after_create_department.png">
-<p><b>Note: </b> The new department won't show up in the joined table (Supevisor selects 'View Product Sales by Department') until a manager adds a product to this department through the Manager Portal.</p>
+<p><b>Note: </b> The new department won't show up in the Supervisor 'View Product Sales by Department' report until a manager adds at least one product to this department through the Manager Portal.</p>
 
 #### Exit Supervisor Portal
-To exit the Supervisor Portal, select <b>Exit Application</b> from the menu.
+<p>To exit the Supervisor Portal, select <b>Exit Supervisor Portal</b> from the menu.</p>
+<img src="readme_images/exit_supervisor_portal.png">
 
 
 ## <a name="technologies-used"></a> Technologies used to build app
