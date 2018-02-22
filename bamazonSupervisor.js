@@ -108,7 +108,7 @@ function createNewDept(){
 	 {
 	 	type: 'text',
 	 	name: 'deptName',
-	 	message: 'What is the name of the department you want to add?'
+	 	message: 'What is the name of the department you want to add? This name will be visible to customers.'
 	 },
 	 {
 	 	type: 'text',

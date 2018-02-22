@@ -190,7 +190,17 @@ function addNewProduct(){
 						console.log("error: " + err);
 					}
 					//Else, notify user that the product was successfully added to the store.
-					console.log(answers.productName + " was successfully added to the store!");
+					//and display new product information on screen.
+					var addProductSuccessMessage = 
+					"=================================================================" + "\r\n" +
+					answers.productName + " was successfully added to the store." + "\r\n" +
+					"Product Details" + "\r\n" +
+					"Name: " + answers.productName + "\r\n" +
+					"Department: " + answers.productDepartment + "\r\n" +
+					"Price: " + answers.productPrice + "\r\n" +
+					"Stock quantity: " + answers.productStock + "\r\n" +
+					"================================================================="
+					console.log(addProductSuccessMessage);
 				}
 			)
 			//Return to Manager Home screen.
