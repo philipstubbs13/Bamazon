@@ -112,7 +112,7 @@ function buyItemOrLeave() {
 	    type: 'list',
 	    name: 'readyToBuy',
 	    message: 'What do you want to do?',
-	    choices: ['Make a purchase', 'Select another department', 'Exit']
+	    choices: ['Make a purchase', 'Select another department', 'Exit store']
 	  }
 	];
 
@@ -232,7 +232,7 @@ function selectItem() {
 							"Order details" + "\r\n" +
 							"Your item: " + customerItem.product_name + "\r\n" +
 							"Quantity: " + customerQuantity + "\r\n" +
-							"Your total is $" + customerTotal + "." + "\r\n" +
+							"Your total is $" + customerTotal.toFixed(2) + "." + "\r\n" +
 							"========================================================" 
 						console.log(pendingOrderDetails);
 
@@ -271,7 +271,7 @@ function selectItem() {
 								console.log("Order complete");
 								console.log("Item ordered: " + customerItem.product_name);
 								console.log("Quantity: " + customerQuantity);
-								console.log("Your Bamazon account was charged $" + customerTotal + ".");
+								console.log("Your Bamazon account was charged $" + customerTotal.toFixed(2) + ".");
 								continueShopping();
 							}
 
