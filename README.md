@@ -181,13 +181,27 @@ MYSQL_PASSWORD='<i>mysql_password</i>'
 
 This file will be used by the dotenv npm package, which will pass the password value as an environment variable to the global process.env object in node. Because .env is specified in the .gitignore file, the MySQL password won't be pushed to GitHub — keeping the password information private.
 
+##  <a name="create-db-connection"></a> Create database connection
+<p>In the bamazonSupervisor.js, bamazonManager.js, and bamazonCustomer.js files, there are database connection properties defined that are used to create a connection to the MySQL database. Update the connection properties to reflect your database instance, as shown in the following example.</p>
+
+<pre>
+//Create connection to mysql database.
+//Read mysql password from the .env file.
+var connection = mysql.createConnection({
+	host: "localhost",
+	port: 3306,
+	user: 'root',
+	password: process.env.MYSQL_PASSWORD,
+	database: 'bamazon'
+});
+</pre>
 
 ## <a name="app-workflow"></a> App workflow
 <p>The application includes three user portals.</p>
 <ul>
-	<li>Supervisor Portal</li>
-	<li>Manager Portal</li>
 	<li>Customer Portal</li>
+	<li>Manager Portal</li>
+	<li>Supervisor Portal</li>
 </ul>
 <p>The following sections describe the user workflow for each of these portals.</p>
 
@@ -225,15 +239,7 @@ This file will be used by the dotenv npm package, which will pass the password v
 <pre>node bamazonManager.js</pre>
 
 <p>When you run this command, you will see a list of menu options.</p>
-<pre>
-BAMAZON MANAGER PORTAL
-? What would you like to do? (Use arrow keys)
-> View Products for Sale
-  View Low Inventory
-  Add to Inventory
-  Add New Product
-  Exit Application
-</pre>
+<img src="readme_images/manager_portal_options.png">
 
 #### View Products for Sale
 <p>When you select <b>View Products for Sale</b> from the menu, you will see a table that lists all of the products for sale along with what department the product belongs to, the price of each product, and the in-stock quantity for each product.</p>
@@ -247,13 +253,16 @@ BAMAZON MANAGER PORTAL
 <p>When you select <b>Add to Inventory</b> from the menu, you will prompted to enter the item number for the product you want to add stock to as well as how much stock.</p>
 <img src="readme_images/add_to_inventory.png">
 <p>The stock quantity for the item number entered at the prompt is updated in the products table in the database.</p>
+<p>If you enter an item number that is not currently associated with any product in the store, you will get an error message that the item was not found. The application will take you back to the manager menu.</p>
+<img src="readme_images/add_inventory_error.png">
 
 #### Add New Product
-<p>When you select <b>Add New Product</b> from the menu, you will be prompted to enter information about the product you want to add to the store. This information is used to run the INSERT INT0 MySQL statement to add the product to the products table in the database.</p>
+<p>When you select <b>Add New Product</b> from the menu, you will be prompted to enter information about the product you want to add to the store. This information is used to run the INSERT INTO MySQL statement to add the product to the products table in the database.</p>
 <img src="readme_images/add_new_product.png">
 
 #### Exit Application
-To exit the Manager Portal, select <b>Exit Application</b> from the menu.
+<p>To exit the Manager Portal, select <b>Exit Manager Portal</b> from the menu.</p>
+<img src="readme_images/exit_manager_portal.png">
 
 ### <a name="supervisor-workflow"> Supervisor workflow
 <p> In the Supervisor Portal, a store supervisor can create a new department and view product sales by department.</p>
