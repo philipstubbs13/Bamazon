@@ -233,7 +233,7 @@ var connection = mysql.createConnection({
 <img src="readme_images/order_details.png">
 
 #### Insuffient quantity in stock
-<p>If the number you enter for quantity is larger than the number the store currently has in stock for that product, you will receive an error message similar to the following example.</p>
+<p>If the number you enter for quantity when you attempt to make a purchase is larger than the number the store currently has in stock for that product, you will receive an error message similar to the following example.</p>
 <img src="readme_images/insufficient_quantity.png">
 <p>The application will take you back to the list of departments where you can enter a different quantity or shop a different department.</p>
 

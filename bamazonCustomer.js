@@ -93,6 +93,7 @@ function showItemsForSale() {
 							"Item number: " + res[i].item_id + "\r\n" +
 							"Item: " + res[i].product_name + "\r\n" +
 							"Price: $" + res[i].price + "\r\n" +
+							"Number remaining: " + res[i].stock_quantity + "\r\n" +
 							"====================================="
 							console.log(items);
 						}
