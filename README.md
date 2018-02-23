@@ -4,7 +4,7 @@
   * [Demo](#demo)
   * [About this project](#about-this-project)
   * [Getting started](#contribute)
-  * [App workflow](#app-workflow)
+  * [Application workflow](#app-workflow)
   * [Technologies used to create app](#technologies-used)
   * [Future code development](#feature-enhancements)
   * [Issues](#issues)
@@ -19,7 +19,7 @@ This project is a command line application built using Node.js, Javascript, the 
 
 Managers can also use this application through the Bamazon Manager Portal. In the Bamazon Manager Portal, managers can see all the products that are currently being sold in the store, see all products that are low in inventory (that is, stock quantity is less than 5), add inventory to an existing product, and add a new product to the store.
 
-Finally, the Bamazon Supervisor Portal allows store supervisors to track product sales across departments as well as see a summary of the highest-grossing departments in the store. From this portal, supervisors also are able to create a new department if desired.
+Finally, the Bamazon Supervisor Portal allows store supervisors to track product sales across departments as well as see a summary of the highest-grossing departments in the store. From this portal, supervisors are also able to create a new department if desired.
 
 ## <a name="contribute"></a> Getting started
 To set up this application on your own computer, perform the following steps:
@@ -71,7 +71,7 @@ The first step is to clone the project repository to a local directory on your c
   			<img src="readme_images/departments_table.png">
   		</li>
   	</ul>
-  	<p>In the Supervisor Portal, the products table and departments table are joined to calculate product sales and total profits for each department.</p>
+  	<p>For the Supervisor Portal, the products table and departments table are joined to calculate product sales and total profits for each department.</p>
   	<img src="readme_images/department_sales.png">
   </li>
   <li><b>package.json</b>: Lists the project dependencies (third party npm packages) and their version numbers.</li>
@@ -197,13 +197,13 @@ var connection = mysql.createConnection({
 });
 </pre>
 
-## <a name="app-workflow"></a> App workflow
+## <a name="app-workflow"></a> Application workflow
 <p>The application includes three user portals.</p>
-<ul>
-	<li>Customer Portal</li>
-	<li>Manager Portal</li>
-	<li>Supervisor Portal</li>
-</ul>
+
+* [Customer Portal](#customer-workflow)
+* [Manager Portal](#manager-workflow)
+* [Supervisor Portal](#supevisor-workflow)
+
 <p>The following sections describe the user workflow for each of these portals.</p>
 
 ### <a name="customer-workflow"> Customer workflow
