@@ -202,7 +202,7 @@ var connection = mysql.createConnection({
 
 * [Customer Portal](#customer-workflow)
 * [Manager Portal](#manager-workflow)
-* [Supervisor Portal](#supevisor-workflow)
+* [Supervisor Portal](#supervisor-workflow)
 
 <p>The following sections describe the user workflow for each of these portals.</p>
 
