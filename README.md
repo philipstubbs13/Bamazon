@@ -235,11 +235,15 @@ var connection = mysql.createConnection({
 #### Insuffient quantity in stock
 <p>If the number you enter for quantity when you attempt to make a purchase is larger than the number the store currently has in stock for that product, you will receive an error message similar to the following example.</p>
 <img src="readme_images/insufficient_quantity.png">
-<p>The application will take you back to the list of departments where you can enter a different quantity or shop a different department.</p>
+<p>The application will take you back to the list of departments where you can enter a different quantity or choose a different department.</p>
 
 #### Item not found
 <p>If you enter an invalid item number (that is, item not found) when making a purchase, you will get an error message saying that the item was not found. The application will take you back to the list of departments so that you can try again.</p>
 <img src="readme_images/item_not_found.png">
+
+#### Exit store
+<p>To exit the Customer Portal, select <b>Exit store</b> from the menu.</p>
+<img src="readme_images/exit_store.png">
 
 ### <a name="manager-workflow"> Manager workflow
 <p>In the Manager Portal, a store manager can perform several tasks. They can view all products sold, view items that have low inventory, add inventory, and add a new product.</p>
@@ -279,7 +283,7 @@ var connection = mysql.createConnection({
 
 #### Accessing the Supervisor Portal
 To access the Supervisor Portal, run the following command:
-<pre>node bazamonSupervisor.js</pre>
+<pre>node bamazonSupervisor.js</pre>
 
 <p>When you run this command, you will see a list of menu options.</p>
 <img src="readme_images/supervisor_portal_menu.png">
