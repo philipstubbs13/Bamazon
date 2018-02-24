@@ -4,7 +4,7 @@ var inquirer = require ("inquirer");
 //Install and require the mysql npm package to make connection to mysql database.
 var mysql = require ("mysql");
 
-//Read and set any environment variables with the dotenv package:
+//Read and set any environment variables with the dotenv package.
 require("dotenv").config();
 
 //Create connection to mysql database.
@@ -85,6 +85,7 @@ function showItemsForSale() {
 					}
 					//console.log(res);
 						//Show only the items in the department that the customer selected.
+						//Display item number, item, price, and number remaining information that is stored in the products table in the db.
 						console.log("Items for sale");
 						console.log("Department: " + customerDept);
 						for (var i = 0; i < res.length; i++){
@@ -126,6 +127,7 @@ function buyItemOrLeave() {
 			selectItem();
 		}
 
+		//If customer selects 'Select another department', go back to the list of departments.
 		else if (answers.readyToBuy === 'Select another department') {
 			showItemsForSale();
 		}
@@ -179,8 +181,11 @@ function selectItem() {
 		inquirer.prompt(selectItem).then(answers => {
 				//console.log(res);
 				//console.log("User entered: " + answers.itemNumber);
+				//Create variable that will hold the item the customer selects and wants to purchase.
 				var customerItem;
+				//This array will hold all the possible item numbers in the store.
 				var availableItemNumbers = [];
+				//Push the item ids from the products table in the database to the availableItemNumbers array.
 				for (var i = 0; i < res.length; i++){
 					availableItemNumbers.push(res[i].item_id);
 					if (res[i].item_id === parseInt(answers.itemNumber)) {
@@ -287,7 +292,7 @@ function selectItem() {
 			});
 }
 
-//Create function to ask customer if they want to continue shopping after an order is placed.
+//Create function to ask customer if they want to continue shopping after an order is placed (or cancelled).
 function continueShopping(){
 	var purchaseAnotherItem = [
 	 {
@@ -299,7 +304,7 @@ function continueShopping(){
 	];
 
 	inquirer.prompt(purchaseAnotherItem).then(answers => {
-		//If customer wants to continue to show, show list of items for sale again.
+		//If customer wants to continue to shop, show list of items for sale again.
 		if (answers.continueToShop) {
 			showItemsForSale();
 		}
@@ -313,5 +318,5 @@ function continueShopping(){
 	});
 
 }
-//Call function to display customer start screen.
+//Call function to display Customer Portal.
 showCustomerScreen();

@@ -57,7 +57,7 @@ function showManagerScreen() {
 			addNewProduct();
 		}
 
-		//If user selects exit application, then end database connection and exit the application.
+		//If user selects Exit Manager Portal, then end database connection and exit the application.
 		else if (answers.managerList === "Exit Manager Portal") {
 			exitApplication();
 		}
@@ -172,7 +172,7 @@ function addNewProduct(){
 		];
 
 
-		//After getting product information from user run INSERT INTO statement to add product to mysql database.
+		//After getting product information from user, run INSERT INTO statement to add product to mysql database.
 		inquirer.prompt(addProduct).then(answers => {
 			var query = connection.query(
 				"INSERT INTO products SET ?", 
@@ -245,8 +245,11 @@ function addToInventory(){
 
 		//After getting information from user, create connection query to the database.
 		inquirer.prompt(addInventory).then(answers => {
+			//This array will hold all possible item numbers in store.
 			var availableItemNumbers = [];
+			//Create variable to hold the item that the manager selected.
 			var selectedItem;
+			//Push the item ids from the products table in the database to the availableItemNumbers array.
 			for (var i = 0; i < res.length; i++) {
 				availableItemNumbers.push(res[i].item_id);
 				if (res[i].item_id === parseInt(answers.itemNumber)) {
@@ -303,7 +306,7 @@ function addToInventory(){
 //Call showManagerScreen function to display manager menu options.
 showManagerScreen();
 
-//Create function that ends database connection and exits application.
+//Create function that ends database connection and exits application when user wants to exit.
 function exitApplication() {
 	console.log("Good bye!");
 	connection.end();

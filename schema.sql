@@ -64,4 +64,6 @@ GROUP BY department_name;
 
 DELETE FROM products WHERE item_id=18;
 
+DELETE FROM departments WHERE department_id=12 OR department_id=13;
+
 

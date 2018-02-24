@@ -53,7 +53,7 @@ function showSupervisorScreen() {
 	});
 }
 
-//Create function so that a supervisor user can view product sales by department in a table.
+//Create function so that a supervisor user can view product sales by department in table format.
 function viewProdSalesByDept() {
 	console.log("Here are the product sales by department.");
 	//Create database connection query to join the departments table and products table.
@@ -62,7 +62,7 @@ function viewProdSalesByDept() {
 	//We are only selecting DISTINCT department names so that there will be no duplicate values in the joined table.
 	//We are doing an INNER JOIN from the departments table where deparment name from departments table equals department name from products table.
 	//We are grouping by the department_name column.
-	//We are ordering the results by the department_sales column (from highest to lowest);
+	//We are ordering the results by the department_sales column (from highest sales to lowest sales);
 	var query = "SELECT DISTINCT departments.department_id, departments.department_name, departments.over_head_costs, SUM(products.product_sales) as department_sales FROM departments INNER JOIN products ON (departments.department_name = products.department_name) GROUP BY department_name ORDER BY department_sales desc";
 	//console.log(query);
 	//Create a connection to the database passing in the created query and callback function as parameters.
@@ -149,7 +149,7 @@ function createNewDept(){
 //Call showSupervisorScreen function to display supervisor menu options.
 showSupervisorScreen();
 
-//Create function that ends database connection and exits application.
+//Create function that ends database connection and exits application when user wants to exit.
 function exitApplication() {
 	console.log("Good bye!");
 	connection.end();
