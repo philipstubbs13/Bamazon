@@ -62,7 +62,7 @@ SELECT department_name, SUM(product_sales) as department_sales
 FROM  products 
 GROUP BY department_name;
 
-DELETE FROM products WHERE item_id=18;
+DELETE FROM products WHERE item_id=23;
 
 DELETE FROM departments WHERE department_id=12 OR department_id=13;
 

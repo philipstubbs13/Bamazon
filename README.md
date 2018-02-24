@@ -85,7 +85,6 @@ The first step is to clone the project repository to a local directory on your c
 <pre>npm install</pre>
 <ul>
 	<li>inquirer npm package (https://www.npmjs.com/package/inquirer) - used to prompt customers when purchasing a product, managers when adding inventory or adding a new product, and supervisors when adding a new department. </li>
-	<li>cli-color npm package (https://www.npmjs.com/package/cli-color) - used to add color to the application.</li>
   	<li>mysql npm package (https://www.npmjs.com/package/mysql) - used to create a connection to the MySQL database via the command line.</li>
   	<li>cli-table npm package (https://www.npmjs.com/package/cli-table) - used to render tables on the command line from node.js scripts.</li>
   	<li>dotenv npm package (https://www.npmjs.com/package/dotenv) - used to retrieve the MySQL password from a .env file and pass the value to the application when running it from the command line.</li>
