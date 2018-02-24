@@ -199,12 +199,11 @@ var connection = mysql.createConnection({
 
 ## <a name="app-workflow"></a> Application workflow
 <p>The application includes three user portals.</p>
+<p>The following sections describe the user workflow for each of these portals.</p>
 
 * [Customer Portal](#customer-workflow)
 * [Manager Portal](#manager-workflow)
 * [Supervisor Portal](#supervisor-workflow)
-
-<p>The following sections describe the user workflow for each of these portals.</p>
 
 ### <a name="customer-workflow"> Customer workflow
 <p>The Customer Portal is where customers can browse products by department and make purchases.</p>
@@ -222,10 +221,10 @@ var connection = mysql.createConnection({
 <img src="readme_images/select_dept.png">
 
 <p>After you select a department, all the items for sale within that department will be displayed, and you will be prompted to make a purchase, select another department, or exit the store.</p>
-<img src="readme_images/department_items_on_sale.PNG">
+<img src="readme_images/department_items_on_sale.png">
 
 #### Making a purchase
-<p>To make a purchase, you need to enter the item number for the item you want to purchase and the quantity (how much you want to purchase).</p>
+<p>To make a purchase, you need to enter the item number for the item you want to purchase and the quantity (how much of that item you want to purchase).</p>
 <p>After your order is placed, enter Y to confirm and complete the purchase.</p>
 <img src="readme_images/make_purchase.png">
 
@@ -236,6 +235,7 @@ var connection = mysql.createConnection({
 <p>If the number you enter for quantity when you attempt to make a purchase is larger than the number the store currently has in stock for that product, you will receive an error message similar to the following example.</p>
 <img src="readme_images/insufficient_quantity.png">
 <p>The application will take you back to the list of departments where you can enter a different quantity or choose a different department.</p>
+<p>If there is an insufficient quantity, the application will prevent the order from going through.</p>
 
 #### Item not found
 <p>If you enter an invalid item number (that is, item not found) when making a purchase, you will get an error message saying that the item was not found. The application will take you back to the list of departments so that you can try again.</p>
@@ -259,8 +259,14 @@ var connection = mysql.createConnection({
 <p>When you select <b>View Products for Sale</b> from the menu, you will see a table that lists all of the products for sale along with what department the product belongs to, the price of each product, and the in-stock quantity for each product.</p>
 <img src="readme_images/view_products_sale.png">
 
+<p>This information is taken directly from the products table in the database using the following SQL statement:</p>
+<pre>SELECT * FROM products</pre>
+<img src="readme_images/products_table_2.png">
+
 #### View Low Inventory
 <p>When you select <b>View Low Inventory</b> from the menu, you will see a table that lists all of the products in the products table in the database that have a stock quantity of less than 5.</p>
+<p>To see products with a stock quantity of less than 5, a SQL statement similar to the following example is used to query the database.</p>
+<pre>SELECT item_id, product_name, stock_quantity FROM products WHERE stock_quantity < 5</pre>
 <img src="readme_images/view_low_inventory.png">
 
 #### Add to Inventory
@@ -292,6 +298,8 @@ To access the Supervisor Portal, run the following command:
 <p>If you select <b>View Product Sales by Department</b> from the menu, you will see a table of all the departments and information about those departments, including overhead costs, department sales, and total profit.</p>
 <img src="readme_images/supervisor_view_sales.png">
 
+<p>This information is taken from the database by joining the departments table and the products table.</p>
+
 <p>To get this information from the database, a connection query needs to be constructed to join the departments table and products table.</p>
 <pre>
 SELECT DISTINCT departments.department_id, departments.department_name, 
@@ -311,7 +319,7 @@ ORDER BY department_sales desc;
 	<li>This query orders the results by the department_sales column (that is, from highest sales to lowest)</li>
 </ul>
 <p>When this query is executed against the products table and the departments table, a joined table similar to the following example is returned.</p>
-<img src="readme_images/department_sales.png">
+<img src="readme_images/joined_table.png">
 <p>Looking at this joined table, you will notice that total profit is not stored in the database. Total profit is calculated on the fly by taking the difference between department sales and overhead costs.</p>
 
 #### Create New Department
@@ -340,6 +348,7 @@ ORDER BY department_sales desc;
 	<li>Create a mySQL login system that prompts users for a username and password.</li>
 	<li>Add option to Manager Portal to remove product from store.</li>
 	<li>Add option to Supervisor Portal to remove department from store.</li>	
+  <li>Color code the 'View Product Sales by Department' table to display negative sales/profit numbers in red and positive numbers in green.</li>
 </ul>
 
 ## <a name ="Issues"></a> Issues
