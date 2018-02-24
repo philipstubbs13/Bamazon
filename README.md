@@ -221,7 +221,7 @@ var connection = mysql.createConnection({
 <img src="readme_images/select_dept.png">
 
 <p>After you select a department, all the items for sale within that department will be displayed, and you will be prompted to make a purchase, select another department, or exit the store.</p>
-<img src="readme_images/department_items_on_sale.png">
+<img src="readme_images/department_items_on_sale.PNG">
 
 #### Making a purchase
 <p>To make a purchase, you need to enter the item number for the item you want to purchase and the quantity (how much of that item you want to purchase).</p>
@@ -265,7 +265,7 @@ var connection = mysql.createConnection({
 
 #### View Low Inventory
 <p>When you select <b>View Low Inventory</b> from the menu, you will see a table that lists all of the products in the products table in the database that have a stock quantity of less than 5.</p>
-<p>To see products with a stock quantity of less than 5, a SQL statement similar to the following example is used to query the database.</p>
+<p>To see products with a stock quantity of less than 5, the following SQL statement is used to query the database.</p>
 <pre>SELECT item_id, product_name, stock_quantity FROM products WHERE stock_quantity < 5</pre>
 <img src="readme_images/view_low_inventory.png">
 
