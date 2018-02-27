@@ -15,7 +15,7 @@
 * Supervisor Portal: https://youtu.be/LbmSQQkzDrk
 
 ## <a name="about-this-project"></a> About this project
-This project is a command line application built using Node.js, Javascript, the inquirer npm package, and a MySQL database. It is an Amazon-like storefront (hence, the name Bamazon) that takes in customer orders on various sporting goods and outdoor items through the Bamazon Customer Portal. When a customer order is taken in the Customer Portal, the stock quantity for the product that is being purchased decreases by how much of that product the customer decides to buy. 
+This project is a command line application built using Node.js, Javascript, the inquirer npm package, and a MySQL database. It is an Amazon-like storefront that takes in customer orders on various sporting goods and outdoor items through the Bamazon Customer Portal. When a customer order is taken in the Customer Portal, the stock quantity for the product that is being purchased decreases by how much of that product the customer decides to buy. 
 
 Managers can also use this application through the Bamazon Manager Portal. In the Bamazon Manager Portal, managers can see all the products that are currently being sold in the store, see all products that are low in inventory (that is, stock quantity is less than 5), add inventory to an existing product, and add a new product to the store.
 
@@ -49,15 +49,15 @@ The first step is to clone the project repository to a local directory on your c
 <p>After you clone the repository, navigate to the project root directory (Bamazon). The project directory structure is set up as follows:</p>
 <ul>
   <li> 
-  	<p><b>BamazonCustomer.js</b>: Bamazon Customer Portal Node Application. Running this application displays information for all of the items on sale, including item number, product name, department name, and product price.</p>
-  	<p>When customer order is processed, stock quantity and product sales are updated in the database, and the amount that the customer's account is charged is displayed on the screen.</p>
+  	<p><b>BamazonCustomer.js</b>: Bamazon Customer Portal. Running this application displays information for all of the items on sale, including item number, product name, department name, and product price.</p>
+  	<p>When a customer order is processed, stock quantity and product sales are updated in the database, and the amount that the customer's account is charged is displayed on the screen.</p>
   </li>
   <li>
-  	<p><b>BamazonManager.js</b>: Bamazon Manager Portal Node Application. Running this application displays a list of menu options that store managers can choose from. This application allows managers to view all the products for sale, view products that are low in inventory, add inventory, and add a new product to the store. </p>
+  	<p><b>BamazonManager.js</b>: Bamazon Manager Portal. Running this application displays a list of menu options that store managers can choose from. This application allows managers to view all the products for sale, view products that are low in inventory, add inventory, and add a new product to the store. </p>
   </li>
   <li>
-  	<p><b>BamazonSupervisor.js</b>: Bamazon Supervisor Portal Node Application. Runing this application displays a list of menu options that store supervisors can choose from. This application allows supervisors to add a new department to the store by providing information through a series of inquirer prompts.</p>
-  	<p>This application also allows supervisors to see a summary (in table format) of product sales by department. Total profit is also displayed in the same table. Total profit is equal to department product sales minus department overhead costs. Note that total profit is calculated on the fly and is stored outside of the database.</p>
+  	<p><b>BamazonSupervisor.js</b>: Bamazon Supervisor Portal. Running this application displays a list of menu options that store supervisors can choose from. This application allows supervisors to add a new department to the store by providing information through a series of inquirer prompts.</p>
+  	<p>This application also allows supervisors to see a summary (in table format) of product sales by department. Total profit is also displayed in the same table. Total profit is equal to department product sales minus department overhead costs. Total profit is stored outside of the database.</p>
   </li>
   <li>
   	<p><b>schema.sql</b>: The database schema. The schema is what describes the structure of each table, and the datatypes that each column of the table can contain. For this project, the database includes two tables, a products table and a departments table.</p>
@@ -75,13 +75,13 @@ The first step is to clone the project repository to a local directory on your c
   	<img src="readme_images/department_sales.png">
   </li>
   <li><b>package.json</b>: Lists the project dependencies (third party npm packages) and their version numbers.</li>
-  <li><b>.gitignore</b>: Any file or directory listed inside this file will not be tracked by GitHub when code is committed.</li>
+  <li><b>.gitignore</b>: Anything listed inside this file will not be tracked by GitHub when code is committed.</li>
   <li><b>package-lock.json</b>: Dependency tree for the project. Lists all the dependencies and their versions.</li>
 </ul>
 
 ### <a name="dependencies"></a> Install the dependencies
 <p>The following npm packages are dependencies to the project. You must install these packages in the project root directory (Bamazon) to be able to use this application from the command line.</p>
-<p>After you clone the repository to a local directory, change directory to the project root directory (Bamazon) and run the following command to install the required npm packages:</p>
+<p>After you clone the repository to a local directory, change directory to the project root directory and run the following command to install the required npm packages:</p>
 <pre>npm install</pre>
 <ul>
 	<li>inquirer npm package (https://www.npmjs.com/package/inquirer) - used to prompt customers when purchasing a product, managers when adding inventory or adding a new product, and supervisors when adding a new department. </li>
@@ -179,7 +179,7 @@ Create a file named .env in the project root directory (Bamazon) with the follow
 MYSQL_PASSWORD='<i>mysql_password</i>'
 </pre>
 
-This file will be used by the dotenv npm package, which will pass the password value as an environment variable to the global process.env object in node. Because .env is specified in the .gitignore file, the MySQL password won't be pushed to GitHub — keeping the password information private.
+This file will be used by the dotenv npm package, which will pass the password value as an environment variable to the global process.env object in node. Because .env is specified in the .gitignore file, the password is kept private.
 
 ##  <a name="create-db-connection"></a> Create database connection
 <p>In the bamazonSupervisor.js, bamazonManager.js, and bamazonCustomer.js files, there are database connection properties defined that are used to create a connection to the MySQL database. Update the connection properties to reflect your database instance, as shown in the following example.</p>
@@ -231,7 +231,7 @@ var connection = mysql.createConnection({
 <img src="readme_images/order_details.png">
 
 #### Insuffient quantity in stock
-<p>If the number you enter for quantity when you attempt to make a purchase is larger than the number the store currently has in stock for that product, you will receive an error message similar to the following example.</p>
+<p>If the number you enter for quantity when you attempt to make a purchase is larger than the number the store currently has in stock, you will receive an error message similar to the following example.</p>
 <img src="readme_images/insufficient_quantity.png">
 <p>The application will take you back to the list of departments where you can enter a different quantity or choose a different department.</p>
 <p>If there is an insufficient quantity, the application will prevent the order from going through.</p>
@@ -258,8 +258,7 @@ var connection = mysql.createConnection({
 <p>When you select <b>View Products for Sale</b> from the menu, you will see a table that lists all of the products for sale along with what department the product belongs to, the price of each product, and the in-stock quantity for each product.</p>
 <img src="readme_images/view_products_sale.png">
 
-<p>This information is taken directly from the products table in the database using the following SQL statement:</p>
-<pre>SELECT * FROM products</pre>
+<p>This information is taken directly from the products table in the database.</p>
 <img src="readme_images/products_table_2.png">
 
 #### View Low Inventory
@@ -276,7 +275,7 @@ var connection = mysql.createConnection({
 <img src="readme_images/add_inventory_error.png">
 
 #### Add New Product
-<p>When you select <b>Add New Product</b> from the menu, you will be prompted to enter information about the product you want to add to the store. This information is used to run the INSERT INTO MySQL statement to add the product to the products table in the database.</p>
+<p>When you select <b>Add New Product</b> from the menu, you will be prompted to enter information about the product you want to add to the store. This information is used to run the INSERT INTO statement to add the product to the products table in the database.</p>
 <img src="readme_images/add_new_product.png">
 
 #### Exit Application
@@ -311,13 +310,13 @@ ORDER BY department_sales desc;
 <p>In this query, note the following:</p>
 <ul>
 	<li>The department_id, department_name, and overhead_costs columns are selected from the departments table.</li>
-	<li>The SQL SUM function is used to calculate product sales for all the products in a department. The SUM of the product sales from the products table for each department is selected. This information is stored using the alias department_sales.</li>
-	<li>Adding DISTINCT to the query ensures that there are no duplicate departments in the joined table.</li>
+	<li>The SQL SUM function is used to calculate product sales for all the products in a department. This information is stored using the alias department_sales.</li>
+	<li>Adding DISTINCT ensures that there are no duplicate departments in the joined table.</li>
 	<li>INNER JOIN is used to join from the departments table where deparment name from departments table equals department name from products table.</li>
 	<li>This query groups the table by the department_name column.</li>
 	<li>This query orders the results by the department_sales column (that is, from highest sales to lowest)</li>
 </ul>
-<p>When this query is executed against the products table and the departments table, a joined table similar to the following example is returned.</p>
+<p>When this query is executed, a joined table similar to the following example is returned.</p>
 <img src="readme_images/joined_table.png">
 <p>Looking at this joined table, you will notice that total profit is not stored in the database. Total profit is calculated on the fly by taking the difference between department sales and overhead costs.</p>
 
